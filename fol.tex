@@ -293,10 +293,10 @@
 \end{definition}
 
 \begin{property}
-    Нека $h$ е изоморфизъм между структурите $\calA$ и $\calB$ за предикатния език $\calL$.
-    Тогава за всеки терм $\tau$, всяка формула $\varphi$ и $a_1, \dots, a_n \in |\calA|$:
+    Нека $\calA$ и $\calB$ са структури за предикатния език $\calL$ и $h$ е изоморфизъм между тях.
+    Тогава за всеки терм $\tau[x_1, \dots, x_n]$, за всяка формула $\varphi[x_1, \dots, x_n]$ и $a_1, \dots, a_n \in |\calA|$:
     \[
-        \tau^\calA\db{a_1, \dots, a_n} = \tau^\calB\db{h[a_1], \dots, h[a_n]} \text{ и } \calA \models \varphi \db{a_1, \dots, a_n} \longleftrightarrow \calB \models \varphi \db{h[a_1], \dots, h[a_n]}.
+        h[\tau^\calA\db{a_1, \dots, a_n}] = \tau^\calB\db{h[a_1], \dots, h[a_n]} \text{ и } \calA \models \varphi \db{a_1, \dots, a_n} \longleftrightarrow \calB \models \varphi \db{h[a_1], \dots, h[a_n]}.
     \]
 \end{property}
 
