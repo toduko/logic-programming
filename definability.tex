@@ -1,0 +1,468 @@
+\documentclass[12pt]{article}
+\usepackage[english, bulgarian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{amssymb}
+\usepackage{hyperref, fancyhdr, lastpage, fancyvrb, tcolorbox, titlesec}
+\usepackage{array, tabularx, colortbl}
+\usepackage{tikz}
+\usepackage{venndiagram}
+\usepackage{amsthm, bm}
+\usepackage{relsize}
+\usepackage{amsmath,physics}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{theoremref}
+\usepackage{circuitikz}
+\usepackage{geometry}
+\usepackage{stmaryrd}
+\usepackage{forest}
+\usepackage{cancel}
+\usepackage{faktor}
+\usepackage{gensymb}
+\usepackage{xskak}
+\usetikzlibrary{automata, arrows, positioning, shapes}
+\useforestlibrary{linguistics}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\opair}{m}
+ {
+  \langle\mspace{2mu}
+  \clist_set:Nn \l_tmpa_clist { #1 }
+  \clist_use:Nn \l_tmpa_clist {,\mspace{3mu plus 1mu minus 1mu}\allowbreak}
+  \mspace{2mu}\rangle
+}
+\ExplSyntaxOff
+
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    linkcolor=blue
+}
+
+\setlength\parindent{0pt}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calZ}{\mathcal{Z}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calB}{\mathcal{B}}
+
+\newcommand{\dequiv}{\stackrel{\text{деф.}}{\longleftrightarrow}}
+
+\newtheorem{problem}{Задача}[section]
+\newtheorem*{claim}{Твърдение}
+\newtheorem*{hint}{Упътване}
+\theoremstyle{definition}
+\newtheorem*{solution}{Решение}
+
+\title{Избрани задачи върху (не)определимост}
+\author{Тодор Дуков}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Структури с числов универсум}
+
+\begin{problem}
+Разглеждаме предикатния език $\calL$, съставен от един триместен предикатен символ $p$, заедно с $\calL$-структурата $\calN = \opair{\N, p^{\calN}}$, където:
+\[
+    p^{\calN}(n, m, k) \dequiv n + m = k.
+\]
+Да се докаже, че:
+\begin{itemize}
+    \item[а)] всяко едно от множествата \[ \{ 0 \},\; \{ 1 \},\; \{ 3 \},\; \{ \opair{n, m} \mid 5 \text{ дели } n - m \} \] е определимо в $\calN$ с формула от езика $\calL$;
+    \item[б)] идентитетът е единственият автоморфизъм в $\calN$.
+\end{itemize}
+\end{problem}
+
+\begin{problem}
+Разглеждаме предикатния език $\calL$, съставен от един триместен предикатен символ $p$, заедно с $\calL$-структурата $\calM = \opair{\Z^{>0}, p^{\calM}}$, където:
+\[
+    p^{\calM}(n, m, k) \dequiv n^m = k.
+\]
+Да се докаже, че всяко от следните множества е определимо с формула от езика $\calL$:
+\begin{itemize}
+    \item[а)] $\{ 1 \}$;
+    \item[б)] $\{ \opair{n, m, k} \mid n \cdot m = k \}$;
+    \item[в)] $\{ \opair{n, m, k} \mid n + m = k\}$;
+    \item[г)] $\{ \opair{n, m} \mid n < m \}$.
+\end{itemize}
+\end{problem}
+
+\begin{problem}
+Разглеждаме предикатния език $\calL$, съставен от един двуместен функционален символ $f$ и символ $\doteq$ за формално равенство, заедно с $\calL$-структурата $\calN = \opair{\N, f^{\calN}}$, където:
+\[
+    f^{\calN}(n, m) = k \dequiv 3^n (m + 1) = k.
+\]
+Да се докаже, че всяко от следните множества е определимо с формула от езика $\calL$:
+\begin{itemize}
+    \item[а)] $\{ 0 \}$;
+    \item[б)] $\{ 1 \}$;
+    \item[в)] $\{ 3^n \mid n \in \N \}$;
+    \item[г)] $\{ \opair{n, m, k} \mid n + m = k\}$.
+\end{itemize}
+Да се намерят всички автоморфизми в $\calN$.
+\end{problem}
+
+\begin{problem}
+Разглеждаме предикатния език $\calL$, съставен от един триместен предикатен символ $p$, заедно с $\calL$-структурата $\calN = \opair{\N, p^{\calN}}$, където:
+\[
+    p^{\calN}(n, m, k) \dequiv n - m = k^2.
+\]
+\begin{itemize}
+    \item[а)] Да се докаже, че всеки синглетон е определим.
+    \item[б)] Да се определят $\{ \opair{n, n} \mid n \in \N \}$ и $\{ \opair{n, m} \mid n < m \}$.
+\end{itemize}
+\end{problem}
+\begin{problem}
+Разглеждаме предикатния език $\calL$, съставен от един двуместен предикатен символ $p$, заедно с $\calL$-структурата $\calN = \opair{\N, p^{\calN}}$, където:
+\[
+    p^{\calN}(n, m) \dequiv n + m \geq 3.
+\]
+Да се докаже, че всяко от следните множества е определимо с формула от езика $\calL$:
+\begin{itemize}
+    \item[а)] $\{ 0 \}$;
+    \item[б)] $\{ 1 \}$;
+    \item[в)] $\{ 2 \}$.
+\end{itemize}
+\end{problem}
+
+\begin{problem}
+Разглеждаме предикатния език $\calL$, съставен от един едноместен функционален символ $f$, двуместен функционален символ $g$ и символ $\doteq$ за формално равенство, заедно с $\calL$-структурата $\calN = \opair{\N, f^{\calN}, g^{\calN}}$, където:
+\begin{align*}
+    f^{\calN}(n) = m    & \dequiv n \text{ дава остатък } m \text{ при деление на } 5 \\
+    g^{\calN}(n, m) = k & \dequiv n \cdot m = k.
+\end{align*}
+\begin{itemize}
+    \item[а)] Да се докаже, че всяко едно от множествата \[ \{ 2 \}, \; \{ 3 \}, \; \{ 4 \}, \; \{ 5 \} \] е определимо в $\calN$ с формула от езика $\calL$.
+    \item[б)] Да се докаже, че съществува естествено число $n$, което не е определимо в $\calN$ с формула от езика $\calL$.
+    \item[в)] Да се намерят всички автоморфизми в $\calN$.
+\end{itemize}
+\end{problem}
+
+\begin{problem}
+Разглеждаме предикатния език $\calL$, съставен от един триместен предикатен символ $p$, заедно с $\calL$-структурите:
+\[
+    \calZ = \opair{\Z, p^{\calZ}}, \; \calQ = \opair{\Q, p^{\calQ}} \text{ и } \calR = \opair{\R, p^{\calR}} \text{,}
+\]
+където за всяко $\calA \in \{ \calZ, \calQ, \calR \}$ е изпълнено, че:
+\[
+    p^{\calA}(a, b, c) \dequiv a + b = c.
+\]
+Да се докаже, че в структурите $\calZ, \calQ$ и $\calR$ единственото нетривиално множество, което е определимо, е $\{ 0 \}$.
+\end{problem}
+
+\begin{problem}
+Разглеждаме предикатния език $\calL$, съставен от един триместен предикатен символ $p$, заедно с $\calL$-структурите:
+\[
+    \calZ = \opair{\Z, p^{\calZ}}, \; \calQ = \opair{\Q, p^{\calQ}} \text{ и } \calR = \opair{\R, p^{\calR}} \text{,}
+\]
+където за всяко $\calA \in \{ \calZ, \calQ, \calR \}$ е изпълнено, че:
+\[
+    p^{\calA}(a, b, c) \dequiv a \cdot b = c.
+\]
+Да се докаже, че в структурите $\calZ, \calQ$ и $\calR$ единствените нетривиални множества, които са определими, са $\{ -1 \}, \{ 0 \}$ и $\{ 1 \}$.
+\end{problem}
+
+\begin{problem}
+Нека с $\{ F_n \}_{n \in \N}$ бележим редицата от естествени числа, дефинирана по следния начин:
+\[
+    F_0 = 0, \; F_1 = 1 \text{ и } F_{n + 2} = F_{n + 1} + F_{n} \text{ за всяко естествено } n.
+\]
+Разглеждаме предикатния език $\calL$, съставен от един двуместен функционален символ $f$ и един едноместен предикатен символ $p$, заедно с $\calL$-структурата $\calS = \opair{\N, f^\calS, p^\calS}$, където:
+\begin{align*}
+    f^{\calS}(n, m) = k & \dequiv n + F_{m + 1} = k                \\
+    p^{\calS}(n)        & \dequiv n \text{ е член на редицата } F.
+\end{align*}
+Да се докаже, че в структурата $\calS$ са определими:
+\[
+    \{ 0 \}, \; \{ 1 \} \text{ и } \{ \opair{n, n} \mid n \in \N \}.
+\]
+Вярно ли е, че в $\calS$ е определимо множеството:
+\[
+    \{ \opair{F_n, F_{n + 1}} \mid n \in \N \}?
+\]
+Да се намерят всички автоморфизми в $\calS$.
+\end{problem}
+
+\begin{problem}
+Нека с $\Q^+$ бележим множеството от всички положителни рационални числа, а с $\calF$ -- множеството от всички функции $f : \N \rightarrow \Q$.
+Разглеждаме предикатния език $\calL$, съставен от два триместни предикатни символа $\operatorname{shift}$ и $\operatorname{mult}$, заедно с $\calL$-структурата $\calS = \opair{\Q^+ \cup \calF, \operatorname{shift}^{\calS}, \operatorname{mult}^{\calS}}$, където:
+\begin{align*}
+    \operatorname{shift}^\calS(f, n, g) & \dequiv f, g \in \calF, \; n \in \N \text{ и за всяко } k \in \N \text{ е изпълнено, че } f(n + k) = g(k) \\
+    \operatorname{mult}^\calS(f, n, g)  & \dequiv f \in \calF, \; n \in \N, \; q \in \Q^+ \text{ и } f(0) = \frac{q}{n}.
+\end{align*}
+Да се докаже, че следните множества са определими в $\calS$ с формули от $\calL$:
+\begin{itemize}
+    \item[а)] $\{ 0 \}$;
+    \item[б)] $\{ \opair{n, m, k} \in \N^3 \mid n + m = k \}$;
+    \item[в)] $\{ \opair{n, m} \in \N^2 \mid n \leq m \}$;
+    \item[г)] $\{ \opair{a, b} \in (\Q^+)^2 \mid a \leq b \}$;
+    \item[д)] $\{ f \in \calF \mid \text{за всяко } n \in \N \text{ е изпълнено, че } f(n) \leq f(n + 1) \}$.
+\end{itemize}
+Нека за $X \subseteq \R$ дефинираме множеството:
+\[
+    \operatorname{Conv}(X) = \{ f \in \calF \mid \text{съществува } x \in X \text{, за което } \lim\limits_{n \to \infty} f(n) = x \}.
+\]
+Определими ли са $\operatorname{Conv}(\Q^+)$ и $\operatorname{Conv}(\R)$?
+\end{problem}
+
+\section{Структури с теоретико-множествен универсум}
+
+\begin{problem}
+Нека фиксираме крайна азбука $\Sigma$.
+Разглеждаме предикатния език $\calL$, съставен от два триместни предикатен символ $\circ$ и $\sqcap$, заедно с $\calL$-структурата $\calM = \opair{\calP(\Sigma^*), \circ^{\calM}, \sqcap^{\calM}}$, където:
+\begin{align*}
+    \circ^{\calM}(L_1, L_2, L_3)  & \dequiv L_1 \cdot L_2 = L_3 \\
+    \sqcap^{\calM}(L_1, L_2, L_3) & \dequiv L_1 \cap L_2 = L_3.
+\end{align*}
+Да се докаже, че всяко от следните множества е определимо с формула от езика $\calL$:
+\begin{itemize}
+    \item[а)] $\{ \opair{L_1, L_2, L_3} \mid L_1 \cup L_2 = L_3 \}$;
+    \item[б)] $\{ \opair{L, L^*} \mid L \in \calP(\Sigma^*) \}$;
+\end{itemize}
+За кои естествени числа $n$ е определимо множеството $\{ \Sigma^n \}$?
+
+Да се определят всички автоморфизми в $\calM$.
+\end{problem}
+
+\begin{problem}
+Разглеждаме предикатния език $\calL$, съставен от един двуместен предикатен символ $p$ и символ $\doteq$ за формално равенство, заедно с фамилията от $\calL$-структури $\{ \calS_A \}_{A \in \calP(\N)}$,
+където за всяко $A \in \calP(\N)$:
+\begin{align*}
+     & |\calS_A| = \calP(A)                                                    \\
+     & p^{\calS_A}(X, Y) \dequiv \text{съществува инекция от } X \text{ в } Y.
+\end{align*}
+Да се докаже, че за всяко $A \in \calP(\N)$ в $\calS_A$ са определими:
+\begin{itemize}
+    \item[а)] $\{ \varnothing \}$;
+    \item[б)] $\{ \opair{X, Y} \mid \text{има биекция от } X \text{ в } Y \}$;
+    \item[в)] $\{ \opair{X, Y} \mid \text{има сюрекция от } X \text{ в } Y \}$;
+    \item[г)] за всяко естествено число $n$, множеството $F_{A,n} = \{ X \in \calP(A) \mid |X| = n \}$.
+\end{itemize}
+Измежду всички $A \in \calP(\N)$, които съдържат елемента $0$, да се намерят тези, за които е вярно, че:
+\begin{itemize}
+    \item[а)] $\{ \{ 0 \} \}$ е определимо в $\calS_A$;
+    \item[б)] $\{ A \setminus \{ 0 \} \}$ е определимо в $\calS_A$.
+\end{itemize}
+Да се намерят онези $A \in \calP(\N)$, за които $\{ A \}$ е определимо в $\calS_A$.
+\end{problem}
+
+\newpage
+
+\begin{problem}
+Разглеждаме предикатния език $\calL$, съставен от един триместен предикатен символ $p$, заедно с $\calL$-структурата $\calS = \opair{\calP(\N), p^{\calS}}$, където:
+\[
+    p^{\calS}(A, B, C) \dequiv A \cap B = C.
+\]
+Да се докаже, че в $\calS$ са определими:
+\begin{itemize}
+    \item[а)] $\{ \varnothing \}$;
+    \item[б)] $\{ \N \}$;
+    \item[в)] $\{ \opair{A, B} \mid A \subseteq B \}$;
+    \item[г)] $\{ \opair{A, B, C} \mid A \cup B = C \}$.
+\end{itemize}
+Да се докаже, че ако $A \subseteq \N$, $A \neq \varnothing$ и $A \neq \N$, то $\{ A \}$ не е определимо в $\calS$.
+\end{problem}
+
+\begin{problem}
+Сума на две множества от точки в равнината $A, B \subseteq \R^2$ ще наричаме множеството:
+\[
+    A + B = \{ \opair{a_1 + b_1, a_2 + b_2} \mid \opair{a_1, a_2} \in A \text{ и } \opair{b_1, b_2} \in B \}.
+\]
+Разглеждаме предикатния език $\calL$, съставен от един триместен предикатен символ $\operatorname{sum}$ и един двуместен предикатен символ $\operatorname{check}$, заедно с $\calL$-структурата $\calS = \opair{\calP(\R^2), \operatorname{sum}^{\calS}, \operatorname{check}^{\calS}}$, където:
+\begin{align*}
+    \operatorname{sum}^{\calS}(A, B, C) & \dequiv A + B = C                  \\
+    \operatorname{check}^{\calS}(A, B)  & \dequiv A \cap B \neq \varnothing.
+\end{align*}
+Да се докаже, че в $\calS$:
+\begin{itemize}
+    \item[а)] равенството на множества от точки е определимо;
+    \item[б)] множествата $\{ \{ \opair{0, 0} \} \}$ и $\{ \R^2 \}$ са определими;
+    \item[в)] множеството от всички едноточкови множества е определимо;
+    \item[г)] множеството от централно симетрични множества\footnote{
+              Множество $A \subseteq \R^2$ е централно симетрично, ако $A = \{ \opair{-a, -b} \mid \opair{a, b} \in A \}$.
+          } е определимо.
+\end{itemize}
+Определимо ли е множеството $\{ \{ \opair{0, 1}, \opair{0, -1} \} \}$ в $\calS$?
+
+Кои са автоморфизмите в $\calS$?
+\end{problem}
+
+\begin{problem}
+Разглеждаме език $\calL$, съставен от един предикатен символ $p$.
+
+За естествено число $n > 3$, с $\calG_n$ означаваме класа от неориентирани графи с точно $n$ върха.
+За граф $G = \opair{V, E}$ с $\calF(E)$ означаваме фамилията от онези подмножества $F \subseteq E$ от ребра на графа $G$, за които графът $\opair{V, F}$ е гора, т.е. ацикличен граф.
+За всеки граф $G \in \calG_n$, където $G = \opair{V, E}$, със $\calS_G$ бележим $\calL$-структурата, за която:
+\begin{align*}
+     & |\calS_G| = \calF(E)                     \\
+     & p^{\calS_G}(A, B) \dequiv A \subseteq B.
+\end{align*}
+Да се докаже, че за всеки фиксиран граф $G \in \calG_n$, където $G = \opair{V, E}$, следните множества са определими в $\calS_G$:
+\begin{itemize}
+    \item[а)] $\{ \varnothing \}$;
+    \item[б)] $\{ \{ e \} \mid e \in E \}$.
+\end{itemize}
+Да се докаже, че за всяко $n > 3$ има затворени формули $\varphi^{(n)}_{forest}$ и $\varphi^{(n)}_{tree}$ над езика $\calL$, за които е вярно следното:
+\begin{itemize}
+    \item[а)] за всеки граф $G \in \calG_n$, $\calS_G \models \varphi^{(n)}_{forest}$ точно когато $G$ е гора;
+    \item[б)] за всеки граф $G \in \calG_n$, $\calS_G \models \varphi^{(n)}_{tree}$ точно когато $G$ е дърво.
+\end{itemize}
+В зависимост от броя на ребрата, за кои гори $G \in \calG_n$ е вярно, че всяко ребро на $G$ е определимо в $\calS_G$?
+\end{problem}
+
+\begin{problem}
+Нека $\calL$ е най-много изброим предикатен език и $\calA$ е $\calL$-структура с безкраен универсум.
+
+Да се докаже, че съществува множество, което не е определимо в $\calA$ с формула от $\calL$.
+\end{problem}
+
+\newpage
+
+\section{Структури с геометричен универсум}
+
+\begin{problem}
+Нека с $\mathbb{P}$ бележим множеството от всички точки в равнината, а с $\mathbb{T}$ -- множеството от всички (неизродени) триъгълници в равнината.
+Разглеждаме предикатния език $\calL$, съставен от един двуместен предикатен символ $p$, заедно с $\calL$-структурата $\calM = \opair{\mathbb{P} \cup \mathbb{T}, p^{\calM}}$, където:
+\[
+    p^{\calM}(A, t) \dequiv A \in \mathbb{P}, \; t \in \mathbb{T} \text{ и } A \in t.
+\]
+Да се докаже, че в $\calM$ са определими:
+\begin{itemize}
+    \item[а)] $\{ \opair{A, t} \in \mathbb{P} \cross \mathbb{T} \mid A \text{ лежи на контура на } t \}$;
+    \item[б)] $\{ \opair{A, t} \in \mathbb{P} \cross \mathbb{T} \mid A \text{ е връх на } t \}$;
+    \item[в)] $\{ \opair{A, B, C, D} \mid \text{правите } AB \text{ и } CD \text{ са успоредни } \}$;
+    \item[д)] $\{ \opair{A, B, C} \mid A \text{ е среда на отсечката } BC \}$.
+\end{itemize}
+\end{problem}
+
+\begin{problem}
+Между два кръга възможностите за взаимни положения са шест:
+\begin{figure*}[h]
+    \centering
+    \begin{subfigure}[b]{0.25\linewidth}
+        \centering
+        \begin{tikzpicture}[node distance=2cm, thick]
+            \draw (0,0) circle (0.5cm);
+            \draw (0.25,0) circle (0.25cm);
+        \end{tikzpicture}
+        \caption*{$(1)$ подмножество с допирна точка}
+    \end{subfigure}
+    \hspace*{\fill}
+    \begin{subfigure}[b]{0.25\linewidth}
+        \centering
+        \begin{tikzpicture}[node distance=2cm, thick]
+            \draw (0,0) circle (0.5cm);
+            \draw (0,0) circle (0.25cm);
+        \end{tikzpicture}
+        \caption*{$(2)$ подмножество без допирна точка}
+    \end{subfigure}
+    \hspace*{\fill}
+    \begin{subfigure}[b]{0.25\linewidth}
+        \centering
+        \begin{tikzpicture}[node distance=2cm, thick]
+            \draw (0,0) circle (0.5cm);
+            \draw (1.1,0) circle (0.5cm);
+        \end{tikzpicture}
+        \caption*{$(3)$ празно сечение \phantom{0000000000}}
+    \end{subfigure}
+\end{figure*}
+\begin{figure*}[h]
+    \centering
+    \begin{subfigure}[b]{0.25\linewidth}
+        \centering
+        \begin{tikzpicture}[node distance=2cm, thick]
+            \draw (0,0) circle (0.5cm);
+            \draw (1,0) circle (0.5cm);
+        \end{tikzpicture}
+        \caption*{$(4)$ една обща точка на контура}
+    \end{subfigure}
+    \hspace*{\fill}
+    \begin{subfigure}[b]{0.25\linewidth}
+        \centering
+        \begin{tikzpicture}[node distance=2cm, thick]
+            \draw (0,0) circle (0.5cm);
+            \draw (0,0) circle (0.5cm);
+        \end{tikzpicture}
+        \caption*{$(5)$ два равни кръга \phantom{0000000000000}}
+    \end{subfigure}
+    \hspace*{\fill}
+    \begin{subfigure}[b]{0.25\linewidth}
+        \centering
+        \begin{tikzpicture}[node distance=2cm, thick]
+            \draw (0,0) circle (0.5cm);
+            \draw (0.7,0) circle (0.5cm);
+        \end{tikzpicture}
+        \caption*{$(6)$ две общи точки на контура}
+    \end{subfigure}
+\end{figure*}
+
+Разглеждаме предикатния език $\calL$, съставен от един двуместен предикатен символ $p$, заедно с фамилията от $\calL$-структури $\{ \calC_i \}_{i \in \{ 1, 2, 3, 4 \}}$, където за всяко $i \in \{ 1, 2, 3, 4 \}$:
+\begin{align*}
+     & |\calC_i| \text{ е множеството от всички кръгове в Евклидовата равнина}                 \\
+     & p^{\calC_i}(c_1, c_2) \dequiv c_1 \text{ и } c_2 \text{ са във взаимно положение } (i).
+\end{align*}
+Да се докаже, че за всяко $i \in \{ 1, 2, 3, 4 \}$ в структурата $\calC_i$ са определими всички взаимни положения между два кръга.
+\end{problem}
+
+\begin{problem}
+Разглеждаме предикатния език $\calL$, съставен от един четириместен предикатен символ $p$, заедно с $\calL$-структурата $\calS = \opair{\E_2, p^{\calS}}$, където:
+\[
+    p^{\calS}(A, B, C, D) \dequiv \text{отсечките } AB \text{ и } CD \text{ имат обща точка.}
+\]
+Да се определи кои от следните множества са определими в $\calS$:
+\begin{itemize}
+    \item[а)] $\{ \opair{A, B, C, D} \mid \text{отсечката } AB \text{ се съдържа в отсечката } CD \}$;
+    \item[б)] $\{ \opair{A, B, C, D} \mid \text{правите } AB \text{ и } CD \text{ са успоредни } \}$;
+    \item[в)] $\{ \opair{A, B, C} \mid \text{точката } C \text{ лежи на отсечката } AB \text{ и } C \neq A, B \}$;
+    \item[г)] $\{ \opair{A, B, C, D} \mid ABCD \text{ е успоредник } \}$;
+    \item[д)] $\{ \opair{A, B, C} \mid C \text{ е среда на отсечката } AB \}$;
+    \item[е)] $\{ \opair{A, B, C} \mid \measuredangle ABC = 60\degree \}$.
+\end{itemize}
+\end{problem}
+
+\begin{problem}
+Разглеждаме предикатния език $\calL$, съставен от един двуместен предикатен символ $p$, заедно с $\calL$-структурата $\calB$, където:
+\begin{align*}
+     & |\calB| \text{ е множеството от всички полета в шахматна дъска (от $\textnormal{\fontfamily{cmss}\selectfont a1}$ до $\textnormal{\fontfamily{cmss}\selectfont h8}$)} \\
+     & p^{\calB}(a, b) \dequiv \text{от полето } a \text{ с кон може да се стигне до полето } b.
+\end{align*}
+
+\begin{center}
+    {
+        \selectlanguage{english}
+        \chessboard[
+            setfen=8/8/8/3N4/8/8/8/8 w - - 0 0,
+            pgfstyle=border,
+            markfields={b4,b6,c3,c7,d5,e3,e7,f4,f6},
+            showmover=false,
+            boardfontsize=16pt
+        ]
+    }
+\end{center}
+Да се докаже, че в структурата $\calB$ са определими:
+\begin{itemize}
+    \item[а)] множеството от ъгловите полета;
+    \item[б)] множеството от периферните полета.
+\end{itemize}
+Да се докаже, че в структурата $\calB$ не е определимо множеството $\{ \textnormal{\fontfamily{cmss}\selectfont a2} \}$.
+\end{problem}
+
+\end{document}

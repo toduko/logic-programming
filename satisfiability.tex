@@ -1,0 +1,252 @@
+\documentclass[12pt]{article}
+\usepackage[english, bulgarian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{amssymb}
+\usepackage{hyperref, fancyhdr, lastpage, fancyvrb, tcolorbox, titlesec}
+\usepackage{array, tabularx, colortbl}
+\usepackage{tikz}
+\usepackage{venndiagram}
+\usepackage{amsthm, bm}
+\usepackage{relsize}
+\usepackage{amsmath,physics}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{theoremref}
+\usepackage{circuitikz}
+\usepackage{geometry}
+\usepackage{stmaryrd}
+\usepackage{forest}
+\usepackage{cancel}
+\usepackage{faktor}
+\usepackage{gensymb}
+\usepackage{xskak}
+\usetikzlibrary{automata, arrows, positioning, shapes}
+\useforestlibrary{linguistics}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\opair}{m}
+ {
+  \langle\mspace{2mu}
+  \clist_set:Nn \l_tmpa_clist { #1 }
+  \clist_use:Nn \l_tmpa_clist {,\mspace{3mu plus 1mu minus 1mu}\allowbreak}
+  \mspace{2mu}\rangle
+}
+\ExplSyntaxOff
+
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    linkcolor=blue
+}
+
+\setlength\parindent{0pt}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+
+\newcommand{\vars}{\operatorname{Vars}}
+\newcommand{\free}{\operatorname{Free}}
+
+\newcommand{\logand}{\; \& \;}
+
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calZ}{\mathcal{Z}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calB}{\mathcal{B}}
+
+\newcommand{\dequiv}{\stackrel{\text{деф.}}{\longleftrightarrow}}
+
+\newcommand{\db}[1]{\llbracket #1 \rrbracket}
+
+\newtheorem*{definition}{Дефиниция}
+\newtheorem{problem}{Задача}[section]
+\newtheorem*{claim}{Твърдение}
+\newtheorem*{property}{Свойство}
+\newtheorem*{hint}{Упътване}
+\theoremstyle{definition}
+\newtheorem*{solution}{Решение}
+\newtheorem*{notation}{Нотация}
+\theoremstyle{remark}
+\newtheorem*{remark}{Забележка}
+
+\title{Задачи върху изпълнимост}
+\author{Тодор Дуков}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Стандартни структури}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+       & \varphi_1 : \forall x \neg p(x, x) \; \& \; \forall x \exists y \, p(x, y)                 \\
+       & \varphi_2 : \forall x \forall y \forall z (p(x, y) \; \& \; p(y, z) \Rightarrow p(x, z))   \\
+       & \varphi_3 : \forall x \forall y (p(x, y) \Rightarrow \exists z (p(x, z) \; \& \; p(z, y))) \\
+       & \varphi_4 : \exists x \forall y (p(x, y) \lor x \doteq y)                                  \\
+       & \varphi_5 : \exists x \exists y (\neg p(x, y) \; \& \; \neg p(y, x)).
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+       & \varphi_1 : \forall x \neg p(x, x)                                                            \\
+       & \varphi_2 : \forall x \forall y \forall z (p(x, y) \; \& \; p(y, z) \Rightarrow p(x, z))      \\
+       & \varphi_3 : \forall x \forall y (q(x, y) \Rightarrow p(x, y))                                 \\
+       & \varphi_4 : \forall x \exists y \exists z (q(x, y) \; \& \; q(x, z) \; \& \; y \not \doteq z) \\
+       & \varphi_5 : \forall x \forall y (p(x, y) \Rightarrow f(x, y) \doteq x)                        \\
+       & \varphi_6 : \forall x \forall y \forall z (f(x, f(y, z)) \doteq f(f(x, y), z)).
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+       & \varphi_1 : \forall x \neg p(x, x) \; \& \; \forall x \exists y \, p(x, y)                                                                                                \\
+       & \varphi_2 : \forall x \forall y \forall z (p(x, y) \; \& \; p(y, z) \Rightarrow p(x, z))                                                                                  \\
+       & \varphi_3 : \forall x \forall y ((q(x) \Leftrightarrow q(y)) \; \& \; p(x, y) \Rightarrow \exists z ((q(x) \Leftrightarrow \neg q(z)) \; \& \; p(x, z) \; \& \; p(z, y))) \\
+       & \varphi_4 : \forall x \exists y ((q(x) \Leftrightarrow \neg q(s(x))) \; \& \; s(y) \doteq x)                                                                              \\
+       & \varphi_5 : \forall x \forall y (s(x) \doteq s(y) \Rightarrow x \doteq y)                                                                                                 \\
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+       & \varphi_1 : \forall x \forall y \forall z (f(x, f(y, z)) \doteq f(f(x, y), z) \; \& \; g(x, g(y, z)) \doteq g(g(x, y), z)) \\
+       & \varphi_2 : \forall x \forall y (f(x, y) \doteq f(y, x)) \; \& \; \exists x \exists y (g(x, y) \not \doteq g(y, x))        \\
+       & \varphi_3 : \forall x \forall y (r(x) \; \& \; r(y) \Rightarrow r(f(x, y)) \; \& \; r(g(x, y)))                            \\
+       & \varphi_4 : \forall x (r(x) \Rightarrow r(s(x)))                                                                           \\
+       & \varphi_5 : \forall x (s(s(x)) \doteq s(x))                                                                                \\
+       & \varphi_6 : \exists x \exists y (r(x) \; \& \; \neg r(y)).
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+       & \varphi_1 : \forall x \forall y \forall z (f(x, g(y, z)) \doteq g(f(x, y), f(x, z)))                                    \\
+       & \varphi_2 : \forall x \forall y (f(x, y) \doteq f(y, x) \; \& \; g(x, y) \doteq g(y, x))                                \\
+       & \varphi_3 : \forall x  (f(x, x) \doteq x \; \& \; g(x, x) \doteq x)                                                     \\
+       & \varphi_4 : \forall x \forall y (f(x, y) \doteq h(g(h(x), h(y))) \; \& \; h(h(x)) \doteq x \; \& \; h(x) \not \doteq x) \\
+       & \varphi_5 : \forall x (f(x, a) \doteq a \; \& \; g(x, a) \doteq x)                                                      \\
+       & \varphi_6 : \forall x (g(x, b) \doteq b \; \& \; f(x, b) \doteq x)                                                      \\
+       & \varphi_7 : h(a) \doteq b \; \& \; h(b) \doteq a.
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+       & \varphi_1 : \forall x \forall y \forall z (f(x, f(y, z)) \doteq f(f(x, y), z) \; \& \; g(x, g(y, z)) \doteq g(g(x, y), z))                           \\
+       & \varphi_2 : \forall x \forall y (f(x, y) \doteq f(y, x)) \; \& \; \exists x \exists y (g(x, y) \not \doteq g(y, x))                                  \\
+       & \varphi_3 : \forall x \forall y \forall z (g(x, f(y, z)) \doteq f(g(x, y), g(x, z)) \; \& \; g(f(x, y), z) \doteq f(g(x, z), g(y, z)))               \\
+       & \varphi_4 : \forall x \exists y (f(x, y) \doteq a) \; \& \; \exists x \exists y (x \not \doteq a \; \& \; y \not \doteq a \; \& \; g(x, y) \doteq a) \\
+       & \varphi_5 : \forall x (f(x, a) \doteq x \; \& \; g(x, a) \doteq a \; \& \; g(x, b) \doteq x).
+\end{align*}
+\end{problem}
+
+\newpage
+
+\section{Нестандартни структури}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+       & \varphi_1 : \forall x \forall y (p(x, y) \Rightarrow \forall z (p(z, x) \lor p(y, z)))        \\
+       & \varphi_2 : \forall x \forall y \forall z (p(x, y) \; \& \; p(y, z) \Rightarrow \neg p(x, z)) \\
+       & \varphi_3 : \forall x \forall y (p(x, y) \Rightarrow \neg p(y, x)).
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+       & \varphi_1 : \forall x (p(x, x) \Leftrightarrow \neg \exists y \, p(x, y))                      \\
+       & \varphi_2 : \forall x \forall y (p(x, y) \Leftrightarrow \exists z (p(x, z) \; \& \; p(z, y))) \\
+       & \varphi_3 : \forall x \forall y (p(x, y) \Rightarrow p(f(y), f(x)))                            \\
+       & \varphi_4 : \forall x \exists y (p(x, y) \; \& \; p(y, f(y)) \; \& \; p(f(y), f(x))).
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+       & \varphi_1 : \forall x (p(x, x) \; \& \; \neg r(x, x))                                                                   \\
+       & \varphi_2 : \forall x \forall y \forall z (p(x, y) \; \& \; p(y, z) \Rightarrow p(x, z)))                               \\
+       & \varphi_3 : \forall x \forall y (p(y, f (x)) \Leftrightarrow \exists z (r(x, z) \; \& \; f (z) \doteq y))               \\
+       & \varphi_4 : \forall x \forall y \forall z (r(x, z) \; \& \; r(x, y) \; \& \; f (y) \doteq f (z) \Rightarrow y \doteq z) \\
+       & \varphi_5 : \forall x \exists y \, r(y, x).
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+       & \varphi_1 : \forall x \forall y (\neg p(x, x) \; \& \; (p(x, y) \Leftrightarrow \exists z (p(x, z) \; \& \; p(z, y))))                                      \\
+       & \varphi_2 : \forall x \forall y ((r(x) \Leftrightarrow r(y)) \Leftrightarrow (p(x, y) \lor p(y, x) \lor x \doteq y))                                        \\
+       & \varphi_3 : \forall x \forall y (f(x) \doteq f(y) \Rightarrow x \doteq y) \; \& \; \forall x (r(x) \Leftrightarrow \neg r(f(x)))                            \\
+       & \varphi_4 : \forall x \exists y \, p(x, y) \; \& \; \forall x (r(x) \Rightarrow \exists y (f(y) \doteq x))                                                  \\
+       & \varphi_5 : \forall x (\neg r(x) \Rightarrow \forall y (p(x, y) \Rightarrow \exists z (p(x, z) \; \& \; p(z, y) \; \& \; \neg \exists t (f(t) \doteq z)))).
+\end{align*}
+\end{problem}
+
+\newpage
+
+% \section{Теоретични задачи}
+
+% \begin{remark}
+%        Голяма част от задачите тук изискват знания от лекции, тоест е възможно в този момент читателя да няма апарата, който е нужен за решаването на тези задачи.
+% \end{remark}
+
+% \begin{problem}[Свойство на крайните модели]
+% Нека $\calL$ е предикатен език, съставен единствено от едноместните предикатни символи $p_1, \dots, p_n$.
+% Да се докаже, че за всяко множество от формули $\Gamma$ за езика $\calL$ е изпълнено, че:
+% \begin{center}
+%        $\Gamma$ има модел $\longleftrightarrow$ $\Gamma$ има краен модел.
+% \end{center}
+% Какво можем да извлечем от този резултат за разрешимостта на въпроса за изпълнимост на формули в езика $\calL$?
+% \end{problem}
+
+% \begin{problem}[Компактност]
+% Нека $\calL$ е предикатен език.
+% Да се докаже, че всяко множество от формули $\Gamma$ за езика $\calL$ е изпълнено, че:
+% \begin{center}
+%        $\Gamma$ е изпълнимо $\longleftrightarrow$ всяко крайно подмножество на $\Gamma$ е изпълнимо.
+% \end{center}
+% Упътване. Използвайте факта, че:
+% \begin{center}
+%        $\Gamma$ е изпълнимо $\longleftrightarrow$ $\Gamma \not \vdash_\calR \square$.
+% \end{center}
+% \end{problem}
+
+% \begin{problem}[Топологично сортиране]
+% Да се докаже, че всяка частична наредба може да се разшири до линейна.
+% \end{problem}
+
+% \begin{problem}[Лема на Kőnig]
+% Във всяко изброимо дърво, където всеки връх има крайно много деца, има път, който минава през всеки етаж.
+% \end{problem}
+
+% \begin{problem}
+% Нека $\calL$ е предикатен език с формално равенство.
+% Да се докаже, че ако едно множество от формули $\Gamma$ за езика $\calL$ има произволно големи крайни модели, то тогава $\Gamma$ има безкраен модел.
+% \end{problem}
+
+\end{document}

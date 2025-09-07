@@ -1,0 +1,237 @@
+\documentclass[12pt]{article}
+\usepackage[english, bulgarian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{amssymb}
+\usepackage{hyperref, fancyhdr, lastpage, fancyvrb, tcolorbox, titlesec}
+\usepackage{array, tabularx, colortbl}
+\usepackage{tikz}
+\usepackage{venndiagram}
+\usepackage{amsthm, bm}
+\usepackage{relsize}
+\usepackage{amsmath,physics}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{scalerel}
+\usepackage{theoremref}
+\usepackage{circuitikz}
+\usepackage{geometry}
+\usepackage{stmaryrd}
+\usepackage{forest}
+\usepackage{cancel}
+\usepackage{faktor}
+\usepackage{gensymb}
+\usepackage{xskak}
+\usetikzlibrary{automata, arrows, positioning, shapes}
+\useforestlibrary{linguistics}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\opair}{m}
+ {
+  \langle\mspace{2mu}
+  \clist_set:Nn \l_tmpa_clist { #1 }
+  \clist_use:Nn \l_tmpa_clist {,\mspace{3mu plus 1mu minus 1mu}\allowbreak}
+  \mspace{2mu}\rangle
+}
+\ExplSyntaxOff
+
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    linkcolor=blue
+}
+
+\setlength\parindent{0pt}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+
+\newcommand{\vars}{\operatorname{Vars}}
+\newcommand{\free}{\operatorname{Free}}
+
+\newcommand{\logand}{\; \& \;}
+
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calZ}{\mathcal{Z}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calB}{\mathcal{B}}
+
+\newcommand{\dequiv}{\stackrel{\text{деф.}}{\longleftrightarrow}}
+
+\newcommand{\db}[1]{\llbracket #1 \rrbracket}
+
+\DeclareMathOperator*{\bigand}{\scalerel*{\&}{\sum}}
+
+\newtheorem*{definition}{Дефиниция}
+\newtheorem{problem}{Задача}[section]
+\newtheorem*{claim}{Твърдение}
+\newtheorem*{property}{Свойство}
+\newtheorem*{hint}{Упътване}
+\theoremstyle{definition}
+\newtheorem*{solution}{Решение}
+\newtheorem*{notation}{Нотация}
+
+\title{(Не)определимост и изпълнимост -- 2024/2025}
+\author{Тодор Дуков}
+\date{}
+
+
+\begin{document}
+\maketitle
+
+\section{(Не)определимост}
+
+\begin{problem}
+Нека фиксираме крайна непразна азбука $\Sigma$, която има $n$ елемента.
+Разглеждаме предикатния език $\calL$, съставен от един триместен предикатен символ $p$ и един двуместен предикатен символ $q$, заедно със $\calL$-структурата $\calM = \opair{\calP(\Sigma^*), p^\calM, q^\calM}$, където:
+\begin{align*}
+    p^\calM(L_1, L_2, L_3) & \dequiv L_1 \cdot L_2 = L_3 \\
+    q^\calM(L_1, L_2)      & \dequiv L_1 \subseteq L_2.
+\end{align*}
+Да се докаже, че:
+\begin{itemize}
+    \item[а)] ако $n = 1$, то за всеки регулярен език $L$, множеството $\{ L \}$ е определимо;
+    \item[б)] ако $n \geq 2$, то има регулярни езици, които не са определими.
+\end{itemize}
+\end{problem}
+
+\begin{problem}
+Разглеждаме предикатния език $\calL$, съставен от един триместен предикатен символа $p$ и един двуместен предикатен символ $q$, заедно с $\calL$-структурата $\calS_n = \opair{S_n \cup \{ 1, \dots, n \}, p^{\calS_n}, q^{\calS_n}}$, където $n$ е просто число и:
+\begin{align*}
+    p^{\calS_n}(\sigma_1, \sigma_2, \sigma_3) & \dequiv \sigma_1, \sigma_2, \sigma_3 \in S_n \text{ и } \sigma_1 \circ \sigma_2 = \sigma_3 \\
+    q^{\calS_n}(\sigma, i)                    & \dequiv i \in \{ 1, \dots, n \}, \sigma \in S_n \text{ и } \sigma(i) \neq i.
+\end{align*}
+
+Да се докаже, че в $\calS_n$ са определими:
+\begin{itemize}
+    \item[а)] $\{ \varepsilon \}$;
+    \item[б)] за всяко $1 \leq k \leq n$, множеството от пермутации с ред $k$;
+    \item[в)] множеството от всички неразложими цикли;
+    \item[г)] $\{ \opair{\sigma_1, \sigma_2} \mid \sigma_1 \text{ и } \sigma_2 \text{ имат еднакъв цикличен строеж } \}$.
+\end{itemize}
+Да се открие колко автоморфизма има в $\calS_n$.
+\end{problem}
+
+\newpage
+
+\begin{problem}
+Нека с $\calF$ бележим множеството всички функции $f: \N \rightarrow \{ 0, 1 \}$.
+За всяко $f \in \calF$ дефинираме $\operatorname{int}_n(f)$ с рекурсия по $n$:
+\begin{itemize}
+    \item $\operatorname{int}_0(f) = [0, 1]$;
+    \item ако $\operatorname{int}_n(f) = [a, b]$ и $f(n) = 0$, тогава $\operatorname{int}_{n + 1}(f) = [a, \frac{a + b}{2}]$;
+    \item ако $\operatorname{int}_n(f) = [a, b]$ и $f(n) = 1$, тогава $\operatorname{int}_{n + 1}(f) = [\frac{a + b}{2}, b]$.
+\end{itemize}
+Лесно се вижда, че за всяко $f \in \calF$, $\bigcap\limits_{n \in \N} \operatorname{int}_n(f)$ е добре дефинирано множество, което има точно един елемент.
+Нека този елемент бележим с $\operatorname{num}(f)$.
+Сега нека за $r \in [0, 1]$ дефинираме множеството:
+\[
+    \operatorname{Func}(r) = \{ f \in \calF \mid \operatorname{num}(f) = r \}.
+\]
+
+Разглеждаме предикатния език $\calL$, съставен от един двуместен предикатен символ $p$, два триместни предикатни символа $q$ и $r$, заедно с $\calL$-структурата $\calA = \opair{\calF \cup \N, p^\calA, q^\calA, r^\calA}$, където:
+\begin{align*}
+    p^\calA(f, n)    & \dequiv f \in \calF, n \in \N \text{ и } f(n) = 1                                                      \\
+    q^\calA(f, n, m) & \dequiv n, m \in \N, f \in \calF \text{ и за всяко } k \geq n \text{ е изпълнено, че } f(k + m) = f(k) \\
+    r^\calA(f, g, n) & \dequiv f, g \in \calF, n \in \N \text{ и } f(n + 1) = g(n).
+\end{align*}
+
+Да се докаже в структурата $\calA$ са определими множествата:
+\begin{itemize}
+    \item[а)] $\operatorname{Func}(0)$;
+    \item[б)] $\operatorname{Func}(1)$;
+    \item[в)] $\operatorname{Func}(\frac{1}{2})$;
+    \item[г)] за всяко естествено $n$, множеството $n$;
+    \item[д)] за всяко рационално $q \in [0, 1]$, множеството $\operatorname{Func}(q)$.
+\end{itemize}
+Да се открие колко автоморфизма има в $\calA$.
+\end{problem}
+
+\newpage
+
+\section{Изпълнимост}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+     & \varphi_1 : \forall x \forall y \forall z (f(x, f(y, z)) \doteq f(f(x, y), z) \; \& \; f(x, y) \doteq f(y, x))       \\
+     & \varphi_2 : \forall x \forall y \forall z (g(x, g(y, z)) \doteq g(g(x, y), z) \; \& \; g(x, y) \doteq g(y, x))       \\
+     & \varphi_3 : \forall x \forall y (p(x) \; \& \; p(y) \Rightarrow p(f(x, y)))                                          \\
+     & \varphi_4 : \forall x \forall y (p(x) \Rightarrow p(g(x, y)))                                                        \\
+     & \varphi_5 : \forall x \forall y (p(g(x, y)) \Rightarrow p(x) \lor p(y))                                              \\
+     & \varphi_6 : \exists x \exists y (p(x) \; \& \; \neg p(y)) \; \& \; \exists x \exists y (f(x, y) \not \doteq g(x, y))
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+     & \varphi_1 : \forall x \forall y \forall z (f(x, f(y, z)) \doteq f(f(x, y), z) \; \& \; f(x, y) \doteq f(y, x))  \\
+     & \varphi_2 : \forall x \forall y \forall z (g(x, g(y, z)) \doteq g(g(x, y), z) \; \& \; g(x, y) \doteq g(y, x))  \\
+     & \varphi_3 : \forall x \forall y \forall z (g(x, f(y, z)) \doteq f(g(x, y), g(x, z)))                            \\
+     & \varphi_4 : \exists x \exists y \forall z (x \not \doteq y \; \& \; f(x, z) \doteq z \; \& \; g(y, z) \doteq z) \\
+     & \varphi_5 : \forall x (g(x, x) \doteq x)                                                                        \\
+     & \varphi_6 : \exists x \exists y \exists z (x \not \doteq y \; \& \; y \not \doteq z \; \& \; x \not \doteq z)
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+     & \varphi_1 : \forall x \, p(x, x)                                                                                    \\
+     & \varphi_2 : \forall x \forall y (p(x, y) \; \& \; p(y, x) \Rightarrow x \doteq y)                                   \\
+     & \varphi_3 : \forall x \forall y \forall z (p(x, y) \; \& \; p(y, z) \Rightarrow p(x, z))                            \\
+     & \varphi_4 : \exists x \exists y (q(x) \; \& \; \neg q(y))                                                           \\
+     & \varphi_5 : \forall x \forall y (q(y) \; \& \; p(x, y) \Rightarrow q(x))                                            \\
+     & \varphi_6 : \forall x \forall y (q(x) \; \& \; q(y) \Rightarrow \exists z (p(x, z) \; \& \; p(y, z) \; \& \; q(z)))
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Разглеждаме следните формули:
+\begin{align*}
+     & \varphi_1 : \forall x (q(x) \Rightarrow p(x))                                                                                                                                         \\
+     & \varphi_2 : \forall x \forall y (p(x) \; \& \; p(y) \Rightarrow p(f(x, y))) \; \& \; \forall x (p(x) \Rightarrow p(g(x)))                                                             \\
+     & \varphi_3 : \forall x (g(x) \not \doteq x)                                                                                                                                            \\
+     & \varphi_4 : \exists x \exists y (f(x, y) \not \doteq f(y, x)) \; \& \; \exists x \exists y \exists z (f(x, f(y, z)) \not \doteq f(f(x, y), z))                                        \\
+     & \psi_n : \exists x_1 \exists x_2 \dots \exists x_n \left( \bigand_{1 \leq i < j \leq n} (x_i \not \doteq x_j) \; \& \; \bigand_{1 \leq i \leq n} q(x_i) \right)                       \\
+     & \chi_n : \exists x_1 \exists x_2 \dots \exists x_n \left( \bigand_{1 \leq i < j \leq n} (x_i \not \doteq x_j) \; \& \; \bigand_{1 \leq i \leq n}(p(x_i) \; \& \; \neg q(x_i)) \right) \\
+     & \theta_n : \exists x_1 \exists x_2 \dots \exists x_n \left( \bigand_{1 \leq i < j \leq n} (x_i \not \doteq x_j) \; \& \; \bigand_{1 \leq i \leq n} \neg p(x_i) \right).
+\end{align*}
+Да се докаже, че е изпълимо множеството от формули:
+\[
+    \Gamma = \{ \varphi_1, \varphi_2, \varphi_3, \varphi_4 \} \cup \{ \psi_n \mid n \geq 2 \} \cup \{ \chi_n \mid n \geq 2 \} \cup \{ \theta_n \mid n \geq 2 \}.
+\]
+\end{problem}
+
+\begin{problem}
+Разглеждаме следните формули:
+\begin{align*}
+     & \varphi_1 : \forall x \forall y \forall z (g(x, g(y, z)) \doteq g(g(x, y), z))                                                                                                \\
+     & \varphi_2 : \forall x \forall y (g(x, y) \doteq g(y, x))                                                                                                                      \\
+     & \varphi_3 : \forall x \forall y (p(x) \; \& \; \neg p(y) \Rightarrow f(x, y, y) \doteq a)                                                                                     \\
+     & \varphi_4 : \forall x \forall y \forall z (p(x) \; \& \; \neg p(y) \; \& \; \neg p(z) \Rightarrow g(f(x, y, z), f(x, z, y)) \doteq a)                                         \\
+     & \varphi_5 : \forall x \forall y \forall z \forall t (p(x) \; \& \; p(y) \; \& \; \neg p(z) \; \& \; \neg p(t)  \Rightarrow f(g(x, y), z, t) \doteq g(f(x, z, t), f(y, z, t))) \\
+     & \psi_n : \exists x_1 \exists x_2 \dots \exists x_n (\bigand_{1 \leq i < j \leq n} (x_i \not \doteq x_j) \; \& \; \bigand_{1 \leq i \leq n} p(x_i))                            \\
+     & \chi_n : \exists x_1 \exists x_2 \dots \exists x_n (\bigand_{1 \leq i < j \leq n} (x_i \not \doteq x_j) \; \& \; \bigand_{1 \leq i \leq n} \neg p(x_i)).
+\end{align*}
+Да се докаже, че е изпълимо множеството от формули:
+\[
+    \Gamma = \{ \varphi_1, \varphi_2, \varphi_3, \varphi_4, \varphi_5 \} \cup \{ \psi_n \mid n \geq 2 \} \cup \{ \chi_n \mid n \geq 2 \}.
+\]
+\end{problem}
+
+\end{document}

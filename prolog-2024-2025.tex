@@ -1,0 +1,191 @@
+\documentclass[12pt]{article}
+\usepackage[english, bulgarian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{amssymb}
+\usepackage{hyperref, fancyhdr, lastpage, fancyvrb, tcolorbox, titlesec}
+\usepackage{array, tabularx, colortbl}
+\usepackage{tikz}
+\usepackage{venndiagram}
+\usepackage{amsthm, bm}
+\usepackage{relsize}
+\usepackage{amsmath,physics}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{scalerel}
+\usepackage{theoremref}
+\usepackage{circuitikz}
+\usepackage{geometry}
+\usepackage{stmaryrd}
+\usepackage{forest}
+\usepackage{cancel}
+\usepackage{faktor}
+\usepackage{gensymb}
+\usepackage{xskak}
+\usetikzlibrary{automata, arrows, positioning, shapes}
+\useforestlibrary{linguistics}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\opair}{m}
+ {
+  \langle\mspace{2mu}
+  \clist_set:Nn \l_tmpa_clist { #1 }
+  \clist_use:Nn \l_tmpa_clist {,\mspace{3mu plus 1mu minus 1mu}\allowbreak}
+  \mspace{2mu}\rangle
+}
+\ExplSyntaxOff
+
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    linkcolor=blue
+}
+
+\setlength\parindent{0pt}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+
+\newcommand{\vars}{\operatorname{Vars}}
+\newcommand{\free}{\operatorname{Free}}
+
+\newcommand{\logand}{\; \& \;}
+
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calZ}{\mathcal{Z}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calB}{\mathcal{B}}
+
+\newcommand{\dequiv}{\stackrel{\text{деф.}}{\longleftrightarrow}}
+
+\newcommand{\db}[1]{\llbracket #1 \rrbracket}
+
+\DeclareMathOperator*{\bigand}{\scalerel*{\&}{\sum}}
+
+\newtheorem*{definition}{Дефиниция}
+\newtheorem{problem}{Задача}
+\newtheorem*{claim}{Твърдение}
+\newtheorem*{property}{Свойство}
+\newtheorem*{hint}{Упътване}
+\theoremstyle{definition}
+\newtheorem*{solution}{Решение}
+\newtheorem*{notation}{Нотация}
+\theoremstyle{remark}
+\newtheorem*{remark}{Забележка}
+
+\title{Пролог -- 2024/2025}
+\author{Тодор Дуков}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{problem}
+Нека $\calA = \opair{\{ a, b \}, \{1, \dots, n \}, 1, \delta, F}$ е детерминиран тотален краен автомат.
+Представяне на автомата $\calA$ в Пролог ще наричаме термa $\mathtt{(Delta, FinalStates)}$, където $\mathtt{Delta}$ е списък, който представя графиката на $\delta$ (тоест списъкът $\mathtt{[(1, a, \delta(1, a)), (1, b, \delta(1, b)), \dots, (n, a, \delta(n, a)), (n, b, \delta(n, b))]}$) и $\mathtt{FinalStates}$ е списък с елементи измежду числата $1, \dots, n$.
+
+Да се дефинира на Пролог предикат $\mathtt{minimise\_automaton(A, MinA)}$, който при подадено представяне $\mathtt{A}$ на автомат $\calA$ генерира в $\mathtt{MinA}$ представяне на $\calA_{\min}$, за който:
+\begin{itemize}
+    \item $\calA_{\min}$ е минимален автомат;
+    \item $\calL(\calA) = \calL(\calA_{\min})$.
+\end{itemize}
+\begin{remark}
+    Можем да улесним съвсем малко задачата, като дадем еднобуквена азбука.
+    Тогава и представянето на $\delta$ може да бъде масив с $n$ елемента, който съдържа числа измежду $1$ и $n$.
+\end{remark}
+\end{problem}
+
+\begin{problem}
+Нека $G = \opair{\{ a, b \}, {1, \dots, n}, 1, R}$ е безконтекстна граматика без $\varepsilon$-правила, която има безкраен език.
+Представяне на граматиката $G$ в Пролог ще наричаме всеки списък $\mathtt{Rules}$, който е представя множеството $R$ (тоест $i \rightarrow_G \alpha_1 \cdots \alpha_k$ т.с.т.к. $\mathtt{(i, [\alpha_1, \dots, \alpha_k])}$ е елемент на $\mathtt{Rules}$).
+
+Да се дефинира на Пролог предикат $\mathtt{derive(Rules, Word)}$, който при подадено представяне $\mathtt{Rules}$ на граматика $G$ при преудовлетворяване генерира в $\mathtt{Word}$ всеки списък от вида:
+\[
+    \mathtt{[\alpha_1, \dots, \alpha_k]} \text{, където } \alpha_1 \cdots \alpha_k \in \calL(G).
+\]
+\begin{remark}
+    Не е задължително граматиката да генерира безкраен език.
+    Човек може да провери дали една граматика $G$ има безкраен език алгоритмично, като провери дали съществува $\alpha \in \calL(G)$, за която $p < |\alpha| < 2p$ (където $p$ е числото от Бар-Хилел лемата), и след това може да ограничи дължината на извода на думата, в случай че езика е краен, иначе генерира всички изводи и филтрира думите.
+    Мисля, че този детайл е най-добре да се спести в полза на студентите.
+\end{remark}
+\end{problem}
+
+\begin{problem}
+Нека $\calN = \opair{\{ a, b \}, Q, S, \Delta, F}$ е недетерминиран краен автомат.
+Представяне на автомата $\calN$ в Пролог ще наричаме термa $\mathtt{(Q, S, D, F)}$, където:
+\begin{itemize}
+    \item $\mathtt{Q}$ е списък, който представя множеството $Q$;
+    \item $\mathtt{S}$ е списък, който представя множеството $S$;
+    \item $\mathtt{D}$ е списък, който представя множеството $\Delta$;
+    \item $\mathtt{F}$ е списък, който представя множеството $F$.
+\end{itemize}
+Да се дефинира на Пролог предикат $\mathtt{convert\_nfa\_to\_total\_dfa(N, A)}$, който при подадено представяне $\mathtt{N}$ на автомат $\calN$ генерира в $\mathtt{A}$ представяне на $\calA$, за който:
+\begin{itemize}
+    \item $\calA$ е детерминиран тотален краен автомат;
+    \item $\calL(\calN) = \calL(\calA)$.
+\end{itemize}
+\end{problem}
+
+\begin{problem}
+Дефинираме представянето на регулярен израз $r$ над азбуката $\{ a, b \}$ в Пролог индуктивно:
+\begin{itemize}
+    \item представянията на $a, b, \varepsilon$ и $\varnothing$ са съответно $\mathtt{a, b, eps}$ и $\mathtt{nothing}$;
+    \item представянията на $(r_1 + r_2)$ и $(r_1 \cdot r_2)$ са съответно $\mathtt{(R1 + R2)}$ и $\mathtt{(R1 * R2)}$, където $\mathtt{R1}$ и $\mathtt{R2}$ са представянията на $r_1$ и $r_2$;
+    \item представянето на $r^*$ е $\mathtt{star(R)}$, където $\mathtt{R}$ е представянето на $r$.
+\end{itemize}
+
+Да се дефинира на Пролог предикат $\mathtt{regex(R)}$, който при преудовлетворяване генерира представянето на всеки регулярен израз.
+\end{problem}
+
+\begin{problem}
+Представяне на едно множество $\{ a_1, \dots, a_n \}$ в Пролог е масивът $\mathtt{[a_1, \dots, a_n]}$, където $\mathtt{a_1, \dots, a_n}$ са представянията на обектите $a_1, \dots, a_n$.
+
+Например можем да представим $\{ \varnothing, \{ \varnothing \}, \{ \varnothing, \{ \varnothing \} \} \}$ като списъка $\mathtt{[[], [[]], [[], [[]]]]}$.
+Дефинираме множествата $V_n$ по рекурсия така:
+\begin{align*}
+     & V_0 = \varnothing       \\
+     & V_{n + 1} = \calP(V_n).
+\end{align*}
+Да се дефинира на Пролог предикат $\mathtt{hereditarily\_finite\_set(S)}$, който при преудовлетворяване генерира в $\mathtt{S}$ представянето на всеки елемент на $\bigcup\limits_{n < \omega} V_n$.
+\begin{remark}
+    Тази задача може малко да се усложни, ако поискаме допълнително да се махнат ординалите, или някой друг интересен клас от множества.
+\end{remark}
+\end{problem}
+
+\newpage
+
+\begin{problem}
+В Пролог ще представяме релациите като списъци от двойки.
+Например $\mathtt{[(1, 2), (2, 2), (3, 1)]}$ представя релацията $\{ \opair{1, 2}, \opair{2, 2}, \opair{3, 1} \}$.
+
+Да се дефинира на Пролог предикат $\mathtt{topo\_sort(PO, LO)}$, който при подадено представяне на частична наредба $\mathtt{PO}$ при преудовлетворяване генерира в $\mathtt{LO}$ представянето на всяка линейна наредба, която разширява представяната от $\mathtt{PO}$ наредба над същото поле.
+\end{problem}
+
+\begin{problem}
+Нека $\opair{P, \leq}$ е ч.н.м.
+$F \subseteq P$ ще наричаме филтър в $\opair{P, \leq}$, ако:
+\begin{itemize}
+    \item $F \neq \varnothing$;
+    \item за всяко $x \in F$ и за всяко $y \in P$, ако $x \leq y$, то тогава $y \in F$;
+    \item за всяко $x, y \in F$ съществува $z \in F$, за което $z \leq x$ и $z \leq y$.
+\end{itemize}
+Да се дефинира на Пролог предикат $\mathtt{gen\_filter(P, Leq, F)}$, който при подадено представяне $\mathtt{(P, Leq)}$ на някоя частична наредба $\opair{P, \leq}$ при преудовлетворяване генерира в $\mathtt{F}$ представянето на всеки един филтър в $\opair{P, \leq}$.
+\begin{remark}
+    Тази задача може малко да се усложни, ако поискаме да генерират ултрафилтър вместо филтър.
+\end{remark}
+\end{problem}
+
+\end{document}
