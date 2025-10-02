@@ -20,7 +20,6 @@
 \usepackage{cancel}
 \usepackage{faktor}
 \usepackage{gensymb}
-\usepackage{xskak}
 \usetikzlibrary{automata, arrows, positioning, shapes}
 \useforestlibrary{linguistics}
 
@@ -226,42 +225,71 @@
 \end{notation}
 
 \begin{definition}
-    Нека $\calL$ е предикатен език, $\tau[x_1, \dots, x_n]$, $\calA$ е структура за $\calL$ и $a_1, \dots, a_n \in |A|$.
-    С индукция относно построението на $\tau$ дефинираме $\tau^\calA \db{a_1, \dots, a_n}$:
+    Нека $\calL$ е предикатен език и $\calA$ е структура за $\calL$.
+    Оценка в структурата $\calA$ ще наричаме всяка функция $v : \vars \rightarrow |\calA|$.
+\end{definition}
+
+\begin{definition}
+    Нека $\calL$ е предикатен език, $\calA$ е структура за езика $\calL$ и $v$ е оценка в $\calA$.
+    С индукция относно построението на терма $\tau$ дефинираме $\tau_v^\calA$:
     \begin{itemize}
-        \item $c^\calA \db{a_1, \dots, a_n} = c^\calA$;
-        \item $x_i^\calA \db{a_1, \dots, a_n} = a_i$;
-        \item $f(\tau_1, \dots, \tau_k)^\calA \db{a_1, \dots, a_n} = f^\calA[\tau_1^\calA \db{a_1, \dots, a_n}, \dots, \tau_k^\calA \db{a_1, \dots, a_n}]$.
+        \item $c_v^\calA = c^\calA$;
+        \item $x_v^\calA = v[x]$;
+      \item $f(\tau_1, \dots, \tau_k)_v^\calA = f^\calA[{\tau_1}_v^\calA, \dots, {\tau_k}_v^\calA]$.
     \end{itemize}
 \end{definition}
 
 \begin{definition}
-    Нека $\calL$ е предикатен език, $\varphi[x_1, \dots, x_n]$, $\calA$ е структура за $\calL$ и $a_1, \dots, a_n \in |A|$.
-    Дефинираме $\calA \models \varphi \db{a_1, \dots, a_n}$ индуктивно:
+    Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$ и $v$ е оценка в $\calA$.
+    Тогава $x \in \vars$ и $a \in |\calA|$ дефинираме оценката:
+    \[
+      v_x^a[y] =
+      \begin{cases}
+        a, \text{ ако } y = x \\
+        v[y], \text{ иначе }
+      \end{cases}
+    \]
+\end{definition}
+
+\begin{definition}
+    Нека $\calL$ е предикатен език, $\calA$ е структура за езика $\calL$ и $v$ е оценка в $\calA$.
+    С индукция относно построението на формулата $\varphi$ дефинираме $\calA \models_v \varphi$:
     \begin{itemize}
-        \item $\calA \models p(\tau_1, \dots, \tau_k) \db{a_1, \dots, a_n} \dequiv \opair{\tau_1 \db{a_1, \dots, a_n}, \dots, \tau_k \db{a_1, \dots, a_n}} \in p^\calA$;
-        \item $\calA \models \neg \varphi \db{a_1, \dots, a_n} \dequiv \calA \not \models \varphi \db{a_1, \dots, a_n}$ (не е вярно, че $\calA \models \varphi \db{a_1, \dots, a_n}$);
-        \item $\calA \models (\varphi \lor \psi) \db{a_1, \dots, a_n} \dequiv \calA \models \varphi \db{a_1, \dots, a_n} \text{ или }\calA \models \psi \db{a_1, \dots, a_n}$;
-        \item $\calA \models \exists x_i \varphi \db{a_1, \dots, a_n} \dequiv \text{има } a \in |\calA| \text{, за което } \calA \models \varphi \db{a_1, \dots, a_{i - 1}, a, a_{i + 1}, \dots, a_n}$.
+        \item $\calA \models_v p(\tau_1, \dots, \tau_k) \dequiv \opair{{\tau_1}_v^\calA, \dots, {\tau_k}_v^\calA} \in p^\calA$;
+        \item $\calA \models_v \neg \varphi \dequiv \calA \not \models_v \varphi $ (не е вярно, че $\calA \models_v \varphi$);
+        \item $\calA \models_v (\varphi \lor \psi) \dequiv \calA \models_v \varphi \text{ или }\calA \models_v \psi$;
+        \item $\calA \models_v \exists x \varphi \dequiv \text{има } a \in |\calA| \text{, за което } \calA \models_{v_x^a} \varphi$.
     \end{itemize}
 \end{definition}
 
 \begin{definition}
-    Ако за всяко $a_1, \dots, a_n \in |\calA|$ е изпълнено, че $\calA \models \varphi \db{a_1, \dots, a_n}$, тогава ще пишем $\calA \models \varphi$.
+    Ако за всяка оценка $v$ в структурата $\calA$ е изпълнено, че $\calA \models_v \varphi$, тогава ще пишем $\calA \models \varphi$.
 \end{definition}
-
-\newpage
 
 \begin{property}
-    Нека $\calL$ е предикатен език, $\varphi[x_1, \dots, x_n]$, $\calA$ е структура за $\calL$ и $a_1, \dots, a_n \in |A|$.
+    Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$ и $v$ е оценка в $\calA$.
     Тогава следните са в сила:
     \begin{itemize}
-        \item $\calA \models (\varphi \logand \psi) \db{a_1, \dots, a_n} \longleftrightarrow \calA \models \varphi \db{a_1, \dots, a_n} \text{ и } \calA \models \psi \db{a_1, \dots, a_n}$;
-        \item $\calA \models (\varphi \Rightarrow \psi) \db{a_1, \dots, a_n} \longleftrightarrow \text{ ако }\calA \models \varphi \db{a_1, \dots, a_n} \text{, то } \calA \models \psi \db{a_1, \dots, a_n}$;
-        \item $\calA \models (\varphi \Leftrightarrow \psi) \db{a_1, \dots, a_n} \longleftrightarrow \calA \models \varphi \db{a_1, \dots, a_n} \text{ т.с.т.к. } \calA \models \psi \db{a_1, \dots, a_n}$;
-        \item $\calA \models \forall x_i \varphi \db{a_1, \dots, a_n} \longleftrightarrow \text{за всяко } a \in |\calA| \text{ имаме } \calA \models \varphi \db{a_1, \dots, a_{i - 1}, a, a_{i + 1}, \dots, a_n}$.
+        \item $\calA \models_v (\varphi \logand \psi) \longleftrightarrow \calA \models_v \varphi \text{ и } \calA \models_v \psi$;
+        \item $\calA \models_v (\varphi \Rightarrow \psi) \longleftrightarrow \text{ ако }\calA \models_v \varphi \text{, то } \calA \models_v \psi$;
+        \item $\calA \models_v (\varphi \Leftrightarrow \psi) \longleftrightarrow \calA \models_v \varphi \text{ т.с.т.к. } \calA \models_v \psi$;
+        \item $\calA \models_v \forall x \varphi \longleftrightarrow \text{за всяко } a \in |\calA| \text{ имаме } \calA \models_{v_x^a} \varphi$;
     \end{itemize}
 \end{property}
+
+\begin{property}
+  Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$, $\varphi$ е формула в $\calL$ и $v_1, v_2$ са такива оценки в $\calA$, за които за всяко $x \in \free[\varphi]$ имаме $v_1[x] = v_2[x]$.
+  Тогава:
+  \[
+    \calA \models_{v_1} \varphi \longleftrightarrow \calA \models_{v_2} \varphi.
+  \]
+\end{property}
+
+Това свойство прави следното съкращение коректно:
+\begin{notation}
+  Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$ с $a_1, \dots, a_n \in |\calA|$.
+  За формула $\varphi[x_1, \dots, x_n]$ пишем, че $\calA \models \varphi \db{a_1, \dots, a_n}$, ако има оценка $v$ в $\calA$, за която за всяко $1 \leq i \leq n$ имаме $v[x_i] = a_i$ и $\calA \models_v \varphi$.
+\end{notation}
 
 \begin{definition}
     Нека $\calA$ е структура за предикатния език $\calL$.
@@ -296,7 +324,7 @@
     Нека $\calA$ и $\calB$ са структури за предикатния език $\calL$ и $h$ е изоморфизъм между тях.
     Тогава за всеки терм $\tau[x_1, \dots, x_n]$, за всяка формула $\varphi[x_1, \dots, x_n]$ и $a_1, \dots, a_n \in |\calA|$:
     \[
-        h[\tau^\calA\db{a_1, \dots, a_n}] = \tau^\calB\db{h[a_1], \dots, h[a_n]} \text{ и } \calA \models \varphi \db{a_1, \dots, a_n} \longleftrightarrow \calB \models \varphi \db{h[a_1], \dots, h[a_n]}.
+        h[\tau^\calA\db{a_1, \dots, a_n}] = \tau^\calB\db{h[a_1], \dots, h[a_n]} \text{ и } \calA \models \varphi \longleftrightarrow \calB \models \varphi \db{h[a_1], \dots, h[a_n]}.
     \]
 \end{property}
 
