@@ -278,12 +278,28 @@
 \end{property}
 
 \begin{property}
+  Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$, $\tau$ е терм в $\calL$ и $v_1, v_2$ са такива оценки в $\calA$, за които за всяко $x \in \vars[\tau]$ имаме $v_1[x] = v_2[x]$.
+  Тогава:
+  \[
+    \tau_{v_1}^\calA = \tau_{v_2}^\calA.
+  \]
+\end{property}
+
+Това свойство прави следното съкращение коректно:
+\begin{notation}
+  Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$ с $a_1, \dots, a_n \in |\calA|$.
+  За терм $\varphi[x_1, \dots, x_n]$ пишем, $\tau^\calA \db{a_1, \dots, a_n}$ вместо $\tau_v^\calA$, където $v$ е произволна оценка в $\calA$, за която за всяко $1 \leq i \leq n$ имаме $v[x_i] = a_i$.
+\end{notation}
+
+\begin{property}
   Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$, $\varphi$ е формула в $\calL$ и $v_1, v_2$ са такива оценки в $\calA$, за които за всяко $x \in \free[\varphi]$ имаме $v_1[x] = v_2[x]$.
   Тогава:
   \[
     \calA \models_{v_1} \varphi \longleftrightarrow \calA \models_{v_2} \varphi.
   \]
 \end{property}
+
+\newpage 
 
 Това свойство прави следното съкращение коректно:
 \begin{notation}
