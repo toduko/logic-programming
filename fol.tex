@@ -91,107 +91,107 @@
 
 Първо фиксираме едно изброимо множество от променливи $\vars$.
 \begin{notation}
-Обикновено елементите на $\vars$ ще означаваме с буквите $x, y, z, t, u, v, w$ с потенциални индекси, примове и така нататък.
+	Обикновено елементите на $\vars$ ще означаваме с буквите $x, y, z, t, u, v, w$ с потенциални индекси, примове и така нататък.
 \end{notation}
 След това фиксираме логическите символи $\exists, \neg, \lor$, помощните символи $(, )$ и \textbf{,} (символът запетая) и символ $\doteq$ за формално равенство, които не са елементи на $\vars$.
 
 \begin{definition}
-    Език на предикатното смятане от първи ред (или накратко предикатен език) ще наричаме всяко $\calL = \opair{\calC, \calF, \calP, \#}$, за което:
-    \begin{itemize}
-        \item $\calC$ е множество, чиито елементи ще наричаме константни символи;
-        \item $\calF$ е множество, чиито елементи ще наричаме функционални символи;
-        \item $\calP$ е множество, чиито елементи ще наричаме предикатни символи;
-        \item $\calC, \calF$ и $\calP$ са две по две чужди;
-        \item нито един от фиксираните символи не попада в $\calC, \calF$ или $\calP$, потенциално с изключение на $\doteq$, който е възможно да е елемент на $\calP$;
-        \item $\# : \calF \cup \calP \rightarrow \N \setminus \{ 0 \}$ ще наричаме функця на арност, като винаги $\#(\doteq) = 2$ (ако е добре дефинирано).
-    \end{itemize}
-    Ако $\#(\zeta) = n$, то тогава ще наричаме $\zeta$ $n$-местен функционален/предикатен символ.
+	Език на предикатното смятане от първи ред (или накратко предикатен език) ще наричаме всяко $\calL = \opair{\calC, \calF, \calP, \#}$, за което:
+	\begin{itemize}
+		\item $\calC$ е множество, чиито елементи ще наричаме константни символи;
+		\item $\calF$ е множество, чиито елементи ще наричаме функционални символи;
+		\item $\calP$ е множество, чиито елементи ще наричаме предикатни символи;
+		\item $\calC, \calF$ и $\calP$ са две по две чужди;
+		\item нито един от фиксираните символи не попада в $\calC, \calF$ или $\calP$, потенциално с изключение на $\doteq$, който е възможно да е елемент на $\calP$;
+		\item $\# : \calF \cup \calP \rightarrow \N \setminus \{ 0 \}$ ще наричаме функця на арност, като винаги $\#(\doteq) = 2$ (ако е добре дефинирано).
+	\end{itemize}
+	Ако $\#(\zeta) = n$, то тогава ще наричаме $\zeta$ $n$-местен функционален/предикатен символ.
 \end{definition}
 
 \newpage
 
 \begin{notation}
-    Обикновено ще използваме:
-    \begin{itemize}
-        \item буквите $a, b, c, d$ за константни символи;
-        \item буквите $f, g, h$ за функционални символи;
-        \item буквите $p, q, r, s$ за предикатни символи,
-    \end{itemize}
-    като позволяваме да има индекси, примове и така нататък.
+	Обикновено ще използваме:
+	\begin{itemize}
+		\item буквите $a, b, c, d$ за константни символи;
+		\item буквите $f, g, h$ за функционални символи;
+		\item буквите $p, q, r, s$ за предикатни символи,
+	\end{itemize}
+	като позволяваме да има индекси, примове и така нататък.
 \end{notation}
 
 \begin{definition}
-    Дефинираме индуктивно понятието терм в предикатен език $\calL = \opair{\calC, \calF, \calP, \#}$:
-    \begin{itemize}
-        \item всеки елемент на $\calC \cup \vars$ е терм в $\calL$;
-        \item ако $\tau_1, \dots, \tau_n$ са термове в $\calL$ и $f \in \calF$ има свойството $\#(f) = n$, то тогава $f(\tau_1, \dots, \tau_n)$ е терм в $\calL$.
-    \end{itemize}
+	Дефинираме индуктивно понятието терм в предикатен език $\calL = \opair{\calC, \calF, \calP, \#}$:
+	\begin{itemize}
+		\item всеки елемент на $\calC \cup \vars$ е терм в $\calL$;
+		\item ако $\tau_1, \dots, \tau_n$ са термове в $\calL$ и $f \in \calF$ има свойството $\#(f) = n$, то тогава $f(\tau_1, \dots, \tau_n)$ е терм в $\calL$.
+	\end{itemize}
 \end{definition}
 
 \begin{notation}
-    Термовете винаги ще бележим с буквата $\tau$ с потенциални индекси, примове и така нататък.
+	Термовете винаги ще бележим с буквата $\tau$ с потенциални индекси, примове и така нататък.
 \end{notation}
 
 \begin{definition}
-    Дефинираме индуктивно понятието формула в предикатен език $\calL = \opair{\calC, \calF, \calP, \#}$:
-    \begin{itemize}
-        \item за всеки $n$-местен предикатен символ $p$ и термове $\tau_1, \dots, \tau_n$ е изпълнено, че $p(\tau_1, \dots, \tau_k)$ е (атомарна) формула в $\calL$;
-        \item ако $\varphi$ и $\psi$ са формули в $\calL$, то тогава $\neg \varphi$ и $(\varphi \lor \psi)$ са формули в $\calL$;
-        \item ако $x$ е променлива и $\varphi$ е формула в $\calL$, то тогава $\exists x \varphi$ е формула в $\calL$.
-    \end{itemize}
+	Дефинираме индуктивно понятието формула в предикатен език $\calL = \opair{\calC, \calF, \calP, \#}$:
+	\begin{itemize}
+		\item за всеки $n$-местен предикатен символ $p$ и термове $\tau_1, \dots, \tau_n$ е изпълнено, че $p(\tau_1, \dots, \tau_n)$ е (атомарна) формула в $\calL$;
+		\item ако $\varphi$ и $\psi$ са формули в $\calL$, то тогава $\neg \varphi$ и $(\varphi \lor \psi)$ са формули в $\calL$;
+		\item ако $x$ е променлива и $\varphi$ е формула в $\calL$, то тогава $\exists x \varphi$ е формула в $\calL$.
+	\end{itemize}
 \end{definition}
 
 \begin{notation}
-    Формулите винаги ще бележим с буквите $\varphi, \psi, \chi$ с потенциални индекси, примове и така нататък.
+	Формулите винаги ще бележим с буквите $\varphi, \psi, \chi$ с потенциални индекси, примове и така нататък.
 \end{notation}
 
 \begin{definition}
-    За формула или терм $\alpha$ с $\vars[\alpha]$ ще бележим множеството от всички променливи, които се срещат в $\alpha$.
+	За формула или терм $\alpha$ с $\vars[\alpha]$ ще бележим множеството от всички променливи, които се срещат в $\alpha$.
 \end{definition}
 
 \begin{definition}
-    Всеки терм $\tau$, за който $\vars[\tau] = \varnothing$, се нарича затворен.
+	Всеки терм $\tau$, за който $\vars[\tau] = \varnothing$, се нарича затворен.
 \end{definition}
 
 \begin{notation}
-    Под $\tau[x_1, \dots, x_n]$ ще имаме предвид ``$\tau$ е терм с променливи измежду $x_1, \dots, x_n$'', тоест $\vars[\tau] \subseteq \{ x_1, \dots, x_n \}$.
+	Под $\tau[x_1, \dots, x_n]$ ще имаме предвид ``$\tau$ е терм с променливи измежду $x_1, \dots, x_n$'', тоест $\vars[\tau] \subseteq \{ x_1, \dots, x_n \}$.
 \end{notation}
 
 \newpage
 
 \begin{definition}
-    Дефинираме множеството от свободни променливи $\free[\varphi]$ за формула $\varphi$ в предикатен език $\calL$ с индукция относно построението на $\varphi$:
-    \begin{itemize}
-        \item $\free[p(\tau_1, \dots, \tau_n)] = \bigcup\limits_{i = 1}^n \vars[\tau_i]$;
-        \item $\free[(\varphi \lor \psi)] = \free[\varphi] \cup \free[\psi]$;
-        \item $\free[\neg \varphi] = \free[\varphi]$;
-        \item $\free[\exists x \varphi] = \free[\varphi] \setminus \{ x \}$.
-    \end{itemize}
+	Дефинираме множеството от свободни променливи $\free[\varphi]$ за формула $\varphi$ в предикатен език $\calL$ с индукция относно построението на $\varphi$:
+	\begin{itemize}
+		\item $\free[p(\tau_1, \dots, \tau_n)] = \bigcup\limits_{i = 1}^n \vars[\tau_i]$;
+		\item $\free[(\varphi \lor \psi)] = \free[\varphi] \cup \free[\psi]$;
+		\item $\free[\neg \varphi] = \free[\varphi]$;
+		\item $\free[\exists x \varphi] = \free[\varphi] \setminus \{ x \}$.
+	\end{itemize}
 \end{definition}
 
 \begin{notation}
-    За двуместни функционални/предикатни символи $\zeta$ въвеждаме записа $\tau_1 \zeta \tau_2$ като съкращение на $\zeta(\tau_1, \tau_2)$.
+	За двуместни функционални/предикатни символи $\zeta$ въвеждаме записа $\tau_1 \zeta \tau_2$ като съкращение на $\zeta(\tau_1, \tau_2)$.
 \end{notation}
 
 \begin{definition}
-    Всяка формула $\varphi$, за която $\free[\varphi] = \varnothing$, се нарича затворена.
+	Всяка формула $\varphi$, за която $\free[\varphi] = \varnothing$, се нарича затворена.
 \end{definition}
 
 \begin{notation}
-    Под $\varphi[x_1, \dots, x_n]$ ще имаме предвид ``$\varphi$ е формула със свободни променливи измежду $x_1, \dots, x_n$'', тоест $\free[\varphi] \subseteq \{ x_1, \dots, x_n \}$.
+	Под $\varphi[x_1, \dots, x_n]$ ще имаме предвид ``$\varphi$ е формула със свободни променливи измежду $x_1, \dots, x_n$'', тоест $\free[\varphi] \subseteq \{ x_1, \dots, x_n \}$.
 \end{notation}
 
 \begin{notation}
-    Нека фиксираме новите символи $\&, \Rightarrow, \Leftrightarrow, \forall$.
-    Въвеждаме следните съкращения:
-    \begin{itemize}
-        \item $(\varphi \logand \psi)$ е съкращение за $\neg (\neg \varphi \lor \neg \psi)$;
-        \item $(\varphi \Rightarrow \psi)$ е съкращение за $(\neg \varphi \lor \psi)$;
-        \item $(\varphi \Leftrightarrow \psi)$ е съкращение за $((\varphi \Rightarrow \psi) \logand (\psi \Rightarrow \varphi))$;
-        \item $\forall x$ е съкращение за $\neg \exists x \neg$;
-        \item $\varphi_1 \, \sigma \, \dots \, \sigma \, \varphi_n$ е съкращение за $(\varphi_1 \, \sigma \, (\varphi_2 \, \sigma \, (\dots (\varphi_{n - 1} \, \sigma \, \varphi_n) \dots )))$ за $\sigma \in \{ \lor, \& \}$;
-        \item няма да пишем най-външните скоби, ако формулата започва с такива.
-    \end{itemize}
+	Нека фиксираме новите символи $\&, \Rightarrow, \Leftrightarrow, \forall$.
+	Въвеждаме следните съкращения:
+	\begin{itemize}
+		\item $(\varphi \logand \psi)$ е съкращение за $\neg (\neg \varphi \lor \neg \psi)$;
+		\item $(\varphi \Rightarrow \psi)$ е съкращение за $(\neg \varphi \lor \psi)$;
+		\item $(\varphi \Leftrightarrow \psi)$ е съкращение за $((\varphi \Rightarrow \psi) \logand (\psi \Rightarrow \varphi))$;
+		\item $\forall x$ е съкращение за $\neg \exists x \neg$;
+		\item $\varphi_1 \, \sigma \, \dots \, \sigma \, \varphi_n$ е съкращение за $(\varphi_1 \, \sigma \, (\varphi_2 \, \sigma \, (\dots (\varphi_{n - 1} \, \sigma \, \varphi_n) \dots )))$ за $\sigma \in \{ \lor, \& \}$;
+		\item няма да пишем най-външните скоби, ако формулата започва с такива.
+	\end{itemize}
 \end{notation}
 
 \newpage
@@ -199,157 +199,157 @@
 \section{Семантика}
 
 \begin{definition}
-    Структура за предикатен език $\calL = \opair{\calC, \calF, \calP, \#}$ ще наричаме всяко $\calA = \opair{A, C, F, P}$, за което:
-    \begin{itemize}
-        \item $A \neq \varnothing$ се нарича универсум или носител на $\calA$;
-        \item $C \subseteq A$ и за всяко $c \in \calC$ има $c^\calA \in C$;
-        \item за всяко $f \in \calF$ с $\#(f) = n$ има $f^\calA \in F$, като $f^\calA : A^n \rightarrow A$;
-        \item за всяко $p \in \calP$ с $\#(p) = n$ има $p^\calA \in P$, като $p^\calA \subseteq A^n$ и в частност $\doteq^\calA$ винаги играе ролята на идентитет (при език с формално равенство).
-    \end{itemize}
+	Структура за предикатен език $\calL = \opair{\calC, \calF, \calP, \#}$ ще наричаме всяко $\calA = \opair{A, C, F, P}$, за което:
+	\begin{itemize}
+		\item $A \neq \varnothing$ се нарича универсум или носител на $\calA$;
+		\item $C \subseteq A$ и за всяко $c \in \calC$ има $c^\calA \in C$;
+		\item за всяко $f \in \calF$ с $\#(f) = n$ има $f^\calA \in F$, като $f^\calA : A^n \rightarrow A$;
+		\item за всяко $p \in \calP$ с $\#(p) = n$ има $p^\calA \in P$, като $p^\calA \subseteq A^n$ и в частност $\doteq^\calA$ винаги играе ролята на идентитет (при език с формално равенство).
+	\end{itemize}
 \end{definition}
 
 \begin{notation}
-    Обикновено структурите ще бележим с ръкописни латински букви $\calA, \calB, \dots, \calZ$ с потенциални индекси, примове и така нататък.
+	Обикновено структурите ще бележим с ръкописни латински букви $\calA, \calB, \dots, \calZ$ с потенциални индекси, примове и така нататък.
 \end{notation}
 
 \begin{notation}
-    Вместо да използваме записа $\calA = \opair{A, C, F, P}$ ще изреждаме всички символи, тоест ще пишем $\calA = \opair{A, c_0^\calA, c_1^\calA, \dots, f_0^\calA, f_1^\calA, \dots, p_0^\calA, p_1^\calA, \dots}$.
+	Вместо да използваме записа $\calA = \opair{A, C, F, P}$ ще изреждаме всички символи, тоест ще пишем $\calA = \opair{A, c_0^\calA, c_1^\calA, \dots, f_0^\calA, f_1^\calA, \dots, p_0^\calA, p_1^\calA, \dots}$.
 \end{notation}
 
 \begin{notation}
-    Универсум на структурата $\calA$ ще бележим с $|\calA|$.
+	Универсум на структурата $\calA$ ще бележим с $|\calA|$.
 \end{notation}
 
 \begin{notation}
-    За да няма конфликти между обектния език и метаезика ще използваме $f[x]$ вместо $f(x)$, когато искаме образът на $x$ през $f$.
+	За да няма конфликти между обектния език и метаезика ще използваме $f[x]$ вместо $f(x)$, когато искаме образът на $x$ през $f$.
 \end{notation}
 
 \begin{definition}
-    Нека $\calL$ е предикатен език и $\calA$ е структура за $\calL$.
-    Оценка в структурата $\calA$ ще наричаме всяка функция $v : \vars \rightarrow |\calA|$.
+	Нека $\calL$ е предикатен език и $\calA$ е структура за $\calL$.
+	Оценка в структурата $\calA$ ще наричаме всяка функция $v : \vars \rightarrow |\calA|$.
 \end{definition}
 
 \begin{definition}
-    Нека $\calL$ е предикатен език, $\calA$ е структура за езика $\calL$ и $v$ е оценка в $\calA$.
-    С индукция относно построението на терма $\tau$ дефинираме $\tau_v^\calA$:
-    \begin{itemize}
-        \item $c_v^\calA = c^\calA$;
-        \item $x_v^\calA = v[x]$;
-      \item $f(\tau_1, \dots, \tau_k)_v^\calA = f^\calA[{\tau_1}_v^\calA, \dots, {\tau_k}_v^\calA]$.
-    \end{itemize}
+	Нека $\calL$ е предикатен език, $\calA$ е структура за езика $\calL$ и $v$ е оценка в $\calA$.
+	С индукция относно построението на терма $\tau$ дефинираме $\tau_v^\calA$:
+	\begin{itemize}
+		\item $c_v^\calA = c^\calA$;
+		\item $x_v^\calA = v[x]$;
+		\item $f(\tau_1, \dots, \tau_k)_v^\calA = f^\calA[{\tau_1}_v^\calA, \dots, {\tau_k}_v^\calA]$.
+	\end{itemize}
 \end{definition}
 
 \begin{definition}
-    Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$ и $v$ е оценка в $\calA$.
-    Тогава $x \in \vars$ и $a \in |\calA|$ дефинираме оценката:
-    \[
-      v_x^a[y] =
-      \begin{cases}
-        a, \text{ ако } y = x \\
-        v[y], \text{ иначе }
-      \end{cases}
-    \]
+	Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$ и $v$ е оценка в $\calA$.
+	Тогава $x \in \vars$ и $a \in |\calA|$ дефинираме оценката:
+	\[
+		v_x^a[y] =
+		\begin{cases}
+			a, \text{ ако } y = x \\
+			v[y], \text{ иначе }
+		\end{cases}
+	\]
 \end{definition}
 
 \begin{definition}
-    Нека $\calL$ е предикатен език, $\calA$ е структура за езика $\calL$ и $v$ е оценка в $\calA$.
-    С индукция относно построението на формулата $\varphi$ дефинираме $\calA \models_v \varphi$:
-    \begin{itemize}
-        \item $\calA \models_v p(\tau_1, \dots, \tau_k) \dequiv \opair{{\tau_1}_v^\calA, \dots, {\tau_k}_v^\calA} \in p^\calA$;
-        \item $\calA \models_v \neg \varphi \dequiv \calA \not \models_v \varphi $ (не е вярно, че $\calA \models_v \varphi$);
-        \item $\calA \models_v (\varphi \lor \psi) \dequiv \calA \models_v \varphi \text{ или }\calA \models_v \psi$;
-        \item $\calA \models_v \exists x \varphi \dequiv \text{има } a \in |\calA| \text{, за което } \calA \models_{v_x^a} \varphi$.
-    \end{itemize}
+	Нека $\calL$ е предикатен език, $\calA$ е структура за езика $\calL$ и $v$ е оценка в $\calA$.
+	С индукция относно построението на формулата $\varphi$ дефинираме $\calA \models_v \varphi$:
+	\begin{itemize}
+		\item $\calA \models_v p(\tau_1, \dots, \tau_k) \dequiv \opair{{\tau_1}_v^\calA, \dots, {\tau_k}_v^\calA} \in p^\calA$;
+		\item $\calA \models_v \neg \varphi \dequiv \calA \not \models_v \varphi $ (не е вярно, че $\calA \models_v \varphi$);
+		\item $\calA \models_v (\varphi \lor \psi) \dequiv \calA \models_v \varphi \text{ или }\calA \models_v \psi$;
+		\item $\calA \models_v \exists x \varphi \dequiv \text{има } a \in |\calA| \text{, за което } \calA \models_{v_x^a} \varphi$.
+	\end{itemize}
 \end{definition}
 
 \begin{definition}
-    Ако за всяка оценка $v$ в структурата $\calA$ е изпълнено, че $\calA \models_v \varphi$, тогава ще пишем $\calA \models \varphi$.
+	Ако за всяка оценка $v$ в структурата $\calA$ е изпълнено, че $\calA \models_v \varphi$, тогава ще пишем $\calA \models \varphi$.
 \end{definition}
 
 \begin{property}
-    Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$ и $v$ е оценка в $\calA$.
-    Тогава следните са в сила:
-    \begin{itemize}
-        \item $\calA \models_v (\varphi \logand \psi) \longleftrightarrow \calA \models_v \varphi \text{ и } \calA \models_v \psi$;
-        \item $\calA \models_v (\varphi \Rightarrow \psi) \longleftrightarrow \text{ ако }\calA \models_v \varphi \text{, то } \calA \models_v \psi$;
-        \item $\calA \models_v (\varphi \Leftrightarrow \psi) \longleftrightarrow \calA \models_v \varphi \text{ т.с.т.к. } \calA \models_v \psi$;
-        \item $\calA \models_v \forall x \varphi \longleftrightarrow \text{за всяко } a \in |\calA| \text{ имаме } \calA \models_{v_x^a} \varphi$;
-    \end{itemize}
+	Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$ и $v$ е оценка в $\calA$.
+	Тогава следните са в сила:
+	\begin{itemize}
+		\item $\calA \models_v (\varphi \logand \psi) \longleftrightarrow \calA \models_v \varphi \text{ и } \calA \models_v \psi$;
+		\item $\calA \models_v (\varphi \Rightarrow \psi) \longleftrightarrow \text{ ако }\calA \models_v \varphi \text{, то } \calA \models_v \psi$;
+		\item $\calA \models_v (\varphi \Leftrightarrow \psi) \longleftrightarrow \calA \models_v \varphi \text{ т.с.т.к. } \calA \models_v \psi$;
+		\item $\calA \models_v \forall x \varphi \longleftrightarrow \text{за всяко } a \in |\calA| \text{ имаме } \calA \models_{v_x^a} \varphi$;
+	\end{itemize}
 \end{property}
 
 \begin{property}
-  Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$, $\tau$ е терм в $\calL$ и $v_1, v_2$ са такива оценки в $\calA$, за които за всяко $x \in \vars[\tau]$ имаме $v_1[x] = v_2[x]$.
-  Тогава:
-  \[
-    \tau_{v_1}^\calA = \tau_{v_2}^\calA.
-  \]
+	Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$, $\tau$ е терм в $\calL$ и $v_1, v_2$ са такива оценки в $\calA$, за които за всяко $x \in \vars[\tau]$ имаме $v_1[x] = v_2[x]$.
+	Тогава:
+	\[
+		\tau_{v_1}^\calA = \tau_{v_2}^\calA.
+	\]
 \end{property}
 
 Това свойство прави следното съкращение коректно:
 \begin{notation}
-  Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$ с $a_1, \dots, a_n \in |\calA|$.
-  За терм $\varphi[x_1, \dots, x_n]$ пишем, $\tau^\calA \db{a_1, \dots, a_n}$ вместо $\tau_v^\calA$, където $v$ е произволна оценка в $\calA$, за която за всяко $1 \leq i \leq n$ имаме $v[x_i] = a_i$.
+	Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$ с $a_1, \dots, a_n \in |\calA|$.
+	За терм $\tau[x_1, \dots, x_n]$ пишем, $\tau^\calA \db{a_1, \dots, a_n}$ вместо $\tau_v^\calA$, където $v$ е произволна оценка в $\calA$, за която за всяко $1 \leq i \leq n$ имаме $v[x_i] = a_i$.
 \end{notation}
 
 \begin{property}
-  Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$, $\varphi$ е формула в $\calL$ и $v_1, v_2$ са такива оценки в $\calA$, за които за всяко $x \in \free[\varphi]$ имаме $v_1[x] = v_2[x]$.
-  Тогава:
-  \[
-    \calA \models_{v_1} \varphi \longleftrightarrow \calA \models_{v_2} \varphi.
-  \]
+	Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$, $\varphi$ е формула в $\calL$ и $v_1, v_2$ са такива оценки в $\calA$, за които за всяко $x \in \free[\varphi]$ имаме $v_1[x] = v_2[x]$.
+	Тогава:
+	\[
+		\calA \models_{v_1} \varphi \longleftrightarrow \calA \models_{v_2} \varphi.
+	\]
 \end{property}
 
-\newpage 
+\newpage
 
 Това свойство прави следното съкращение коректно:
 \begin{notation}
-  Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$ с $a_1, \dots, a_n \in |\calA|$.
-  За формула $\varphi[x_1, \dots, x_n]$ пишем, че $\calA \models \varphi \db{a_1, \dots, a_n}$, ако има оценка $v$ в $\calA$, за която за всяко $1 \leq i \leq n$ имаме $v[x_i] = a_i$ и $\calA \models_v \varphi$.
+	Нека $\calL$ е предикатен език, $\calA$ е структура за $\calL$ с $a_1, \dots, a_n \in |\calA|$.
+	За формула $\varphi[x_1, \dots, x_n]$ пишем, че $\calA \models \varphi \db{a_1, \dots, a_n}$, ако има оценка $v$ в $\calA$, за която за всяко $1 \leq i \leq n$ имаме $v[x_i] = a_i$ и $\calA \models_v \varphi$.
 \end{notation}
 
 \begin{definition}
-    Нека $\calA$ е структура за предикатния език $\calL$.
-    Казваме, че едно множество $X \subseteq |\calA|^n$ е определимо в езика $\calL$, ако има формула $\varphi$ в $\calL$, за която:
-    \[
-    \opair{a_1, \dots, a_n} \in X \longleftrightarrow \calA \models \varphi \db{a_1, \dots, a_n}.
-    \]
+	Нека $\calA$ е структура за предикатния език $\calL$.
+	Казваме, че едно множество $X \subseteq |\calA|^n$ е определимо в езика $\calL$, ако има формула $\varphi$ в $\calL$, за която:
+	\[
+		\opair{a_1, \dots, a_n} \in X \longleftrightarrow \calA \models \varphi \db{a_1, \dots, a_n}.
+	\]
 \end{definition}
 
 \begin{definition}
-    Нека $\Gamma$ е множество от формули в предикатния език $\calL$ и $\calA$ е структура за $\calL$.
-    Казваме, че $\calA$ e модел на $\Gamma$ и пишем $\calA \models \Gamma$, ако за всяко $\varphi \in \Gamma$ е изпълнено, че $\calA \models \varphi$.
+	Нека $\Gamma$ е множество от формули в предикатния език $\calL$ и $\calA$ е структура за $\calL$.
+	Казваме, че $\calA$ e модел на $\Gamma$ и пишем $\calA \models \Gamma$, ако за всяко $\varphi \in \Gamma$ е изпълнено, че $\calA \models \varphi$.
 \end{definition}
 
 \begin{definition}
-    Едно множество от формули наричаме изпълнимо, ако за него съществува модел.
+	Едно множество от формули наричаме изпълнимо, ако за него съществува модел.
 \end{definition}
 
 \begin{definition}
-    Нека $\calA$ и $\calB$ са структури за предикатния език $\calL$.
-    Функцията $h : |\calA| \rightarrow |\calB|$ наричаме изоморфизъм, ако:
-    \begin{itemize}
-        \item $h$ е биекция;
-        \item $h[c^\calA] = c^\calB$ за всеки константен символ $c$;
-        \item $h[f^\calA[a_1, \dots, a_n]] = f^\calB[h[a_1], \dots, h[a_n]]$ за всеки функционален символ $f$ и $a_1, \dots, a_n \in |\calA|$;
-        \item $\opair{a_1, \dots, a_n} \in p^\calA \longleftrightarrow \opair{h[a_1], \dots, h[a_n]} \in p^\calB$ за всеки предикатен символ $p$ и $a_1, \dots, a_n \in |\calA|$.
-    \end{itemize}
-    Ако $\calA = \calB$, то тогава $h$ се нарича и автоморфизъм.
+	Нека $\calA$ и $\calB$ са структури за предикатния език $\calL$.
+	Функцията $h : |\calA| \rightarrow |\calB|$ наричаме изоморфизъм, ако:
+	\begin{itemize}
+		\item $h$ е биекция;
+		\item $h[c^\calA] = c^\calB$ за всеки константен символ $c$;
+		\item $h[f^\calA[a_1, \dots, a_n]] = f^\calB[h[a_1], \dots, h[a_n]]$ за всеки функционален символ $f$ и $a_1, \dots, a_n \in |\calA|$;
+		\item $\opair{a_1, \dots, a_n} \in p^\calA \longleftrightarrow \opair{h[a_1], \dots, h[a_n]} \in p^\calB$ за всеки предикатен символ $p$ и $a_1, \dots, a_n \in |\calA|$.
+	\end{itemize}
+	Ако $\calA = \calB$, то тогава $h$ се нарича и автоморфизъм.
 \end{definition}
 
 \begin{property}
-    Нека $\calA$ и $\calB$ са структури за предикатния език $\calL$ и $h$ е изоморфизъм между тях.
-    Тогава за всеки терм $\tau[x_1, \dots, x_n]$, за всяка формула $\varphi[x_1, \dots, x_n]$ и $a_1, \dots, a_n \in |\calA|$:
-    \[
-        h[\tau^\calA\db{a_1, \dots, a_n}] = \tau^\calB\db{h[a_1], \dots, h[a_n]} \text{ и } \calA \models \varphi \longleftrightarrow \calB \models \varphi \db{h[a_1], \dots, h[a_n]}.
-    \]
+	Нека $\calA$ и $\calB$ са структури за предикатния език $\calL$ и $h$ е изоморфизъм между тях.
+	Тогава за всеки терм $\tau[x_1, \dots, x_n]$, за всяка формула $\varphi[x_1, \dots, x_n]$ и $a_1, \dots, a_n \in |\calA|$:
+	\[
+		h[\tau^\calA\db{a_1, \dots, a_n}] = \tau^\calB\db{h[a_1], \dots, h[a_n]} \text{ и } \calA \models \varphi \db{a_1, \dots, a_n} \longleftrightarrow \calB \models \varphi \db{h[a_1], \dots, h[a_n]}.
+	\]
 \end{property}
 
 \begin{property}
-    Нека $\calA$ е структура за предикатния език $\calL$, $h$ е автоморфизъм (от $\calA$ към себе си) и $X \subseteq |\calA|^n$.
-    Тогава ако $X$ е определимо, то:
-    \[
-        \{ \opair{h[a_1], \dots, h[a_n]} \mid \opair{a_1, \dots, a_n} \in X \} = X.
-    \]
+	Нека $\calA$ е структура за предикатния език $\calL$, $h$ е автоморфизъм (от $\calA$ към себе си) и $X \subseteq |\calA|^n$.
+	Тогава ако $X$ е определимо, то:
+	\[
+		\{ \opair{h[a_1], \dots, h[a_n]} \mid \opair{a_1, \dots, a_n} \in X \} = X.
+	\]
 \end{property}
 
 \end{document}
