@@ -49,10 +49,10 @@ parent_star(X, Y) :- parent(Z, Y), parent_star(X, Z).
 % X е елемент на L.
 
 % ИМПЛЕМЕНТАЦИЯ:
-% X е в началото, или
-member(X, [X|_]).                 % (1)
-% X е някъде в опашката.
-member(X, [_|L]) :- member(X, L). % (2)
+% (1) X е в началото, или
+member(X, [X|_]).
+% (2) X е някъде в опашката.
+member(X, [_|L]) :- member(X, L).
 
 % ПРИМЕРНА АРГУМЕНТАЦИЯ ЗА ФИНИТНОСТ:
 % (повече такива няма да пиша тук, а
@@ -146,8 +146,8 @@ adjacent(X, Y, L) :- append(_, [X, Y|_], L).
 
 % ИМПЛЕМЕНТАЦИЯ:
 is_sorted(L) :- not((
-                      adjacent(X, Y, L),
-                      X > Y
+                        adjacent(X, Y, L),
+                        X > Y
                     )).
 
 % ДОКУМЕНТАЦИЯ:
@@ -186,6 +186,13 @@ subsequence([], []).
 subsequence([_|L], M) :- subsequence(L, M).
 subsequence([X|L], [X|M]) :- subsequence(L, M).
 
+% to_unique(+L, M):
+% M се получава от L чрез премахване 
+% на всички повторения.
+to_unique([], []).
+to_unique([X|L], M) :- to_unique(L, M), member(X, M).
+to_unique([X|L], [X|M]) :- to_unique(L, M), not(member(X, M)).
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                     МНОЖЕСТВА
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -196,58 +203,192 @@ subsequence([X|L], [X|M]) :- subsequence(L, M).
 % където пр(xi) е представянето в Пролог на
 % обекта xi. Обратно, всеки списък в Пролог
 % L представя едно единствено множество,
-% което ще бележим с мн(L).
+% което ще бележим с мн(L). В общия случай, 
+% когато имаме представяне X на даден обект 
+% в Пролог, обекта ще бележим с об(X).
 
 % ДОКУМЕНТАЦИЯ:
-% subset(X, +Y):
+% subset(-X, +Y):
 % мн(X) е подмножество на мн(Y).
 
 % ИМПЛЕМЕНТАЦИЯ:
-subset(X, Y) :- subsequence(Y, X).
+subset(X, Y) :- subsequence(Y, X1), to_unique(X1, X).
 
 % ДОКУМЕНТАЦИЯ:
-% powerset(+X, PX):
+% powerset(+X, -PX):
 % мн(PX) е степенното множество на мн(X).
 
 % ИМПЛЕМЕНТАЦИЯ:
-powerset(X, PX) :- powerset_helper(X, PX, []).
+powerset(X, PX) :-
+    powerset_helper(X, PX1, []), to_unique(PX1, PX).
 
 % ДОКУМЕНТАЦИЯ:
-% powerset_helper(+X, PX, +Acc):
+% powerset_helper(+X, -PX, +Acc):
 % мн(PX) е степенното множество на мн(X),
 % обединено с мн(Acc).
 
 % ИМПЛЕМЕНТАЦИЯ:
 powerset_helper(X, PX, PX) :- not((
-                                    subset(SX, X),
-                                    not(member(SX, PX))
+                                      subset(SX, X),
+                                      not(member(SX, PX))
                                   )).
-powerset_helper(X, PX, Acc) :- subset(SX, X),
-                               not(member(SX, Acc)),
-                               powerset_helper(X, PX, [SX|Acc]).
+powerset_helper(X, PX, Acc) :-
+    subset(SX, X),
+    not(member(SX, Acc)),
+    powerset_helper(X, PX, [SX|Acc]).
 
 % ДОКУМЕНТАЦИЯ:
-% intersection(+X, +Y, XAndY):
+% intersection(+X, +Y, -XAndY):
 % мн(XAndY) е сечението на мн(X) и мн(Y).
 
 % ИМПЛЕМЕНТАЦИЯ:
-intersection(X, Y, XAndY) :- subset(XAndY, X), not((
-                                                      member(EY, Y),
-                                                      not(member(EY, XAndY))
-                                                   )).
+intersection(X, Y, XAndY) :-
+    subset(Z, X),
+    not((
+            member(EY, Y),
+            not(member(EY, Z))
+        )),
+  to_unique(Z, XAndY).
 
 % ДОКУМЕНТАЦИЯ:
-% union(+X, +Y, XUY):
+% union(+X, +Y, -XUY):
 % мн(XUY) е обединението на мн(X) и мн(Y).
 
 % ИМПЛЕМЕНТАЦИЯ:
-union(X, Y, XUY) :- append(X, Y, XUY).
+union(X, Y, XUY) :- append(X, Y, Z), to_unique(Z, XUY).
 
 % ДОКУМЕНТАЦИЯ:
-% difference(+X, +Y, XMinusY):
+% difference(+X, +Y, -XMinusY):
 % мн(XMinusY) е разликата на мн(X) и мн(Y).
 
 % ИМПЛЕМЕНТАЦИЯ:
-difference([], _, []). 
-difference([E|X], Y, Z) :- difference(X, Y, Z), member(E, Y).
-difference([E|X], Y, [E|Z]) :- difference(X, Y, Z), not(member(E, Y)).
+difference([], _, []).
+difference([E|X], Y, Z) :- difference(X, Y, Z), (member(E, Y); member(E, X)).
+difference([E|X], Y, [E|Z]) :- difference(X, Y, Z), not((member(E, X); member(E, Y))).
+
+% ДОКУМЕНТАЦИЯ:
+% cartesian_product(+A, +B, -AxB):
+% мн(AxB) е декартовото произведение
+% на мн(A) и мн(B).
+
+% ИМПЛЕМЕНТАЦИЯ:
+cartesian_product([], _, []).
+cartesian_product([EA|RestA], B, AxB) :-
+    cartesian_product(RestA, B, RestAxB),
+    singleton_product(EA, B, EAxB),
+    union(EAxB, RestAxB, AxB).
+
+% ДОКУМЕНТАЦИЯ:
+% singleton_product(+X, +A, -SgXxA):
+% мн(SgXxA) е декартовото произведение
+% на { об(X) } и мн(A).
+
+% ИМПЛЕМЕНТАЦИЯ:
+singleton_product(_, [], []).
+singleton_product(X, [EA|RestA], [(X, EA)|SgXxRestA]) :-
+    singleton_product(X, RestA, SgXxRestA).
+
+% ДОКУМЕНТАЦИЯ:
+% is_relation(+R):
+% мн(R) е релация.
+
+% ИМПЛЕМЕНТАЦИЯ:
+is_relation(R) :- not((member(X, R), X \= (_, _))).
+
+% ДОКУМЕНТАЦИЯ:
+% dom(+R, -DomR):
+% мн(DomR) е домейнът на мн(R).
+
+% ИМПЛЕМЕНТАЦИЯ:
+dom([], []).
+dom([(A, _)|RestR], [A|DomRestR]) :- dom(RestR, DomRestR).
+
+% ДОКУМЕНТАЦИЯ:
+% rng(+R, -RngR):
+% мн(RngR) е областта от стойности на мн(R).
+
+% ИМПЛЕМЕНТАЦИЯ:
+rng(R, RngR) :- inverse(R, RInverse), dom(RInverse, RngR).
+
+% ДОКУМЕНТАЦИЯ:
+% inverse(+R, -RInverse):
+% мн(RInverse) е обратната релация на мн(R).
+
+% ИМПЛЕМЕНТАЦИЯ:
+inverse([], []).
+inverse([(X, Y)|RestR], [(Y, X)|RestRInverse]) :-
+    inverse(RestR, RestRInverse).
+
+% ДОКУМЕНТАЦИЯ:
+% fld(+R, -FldR):
+% мн(FldR) е полето на мн(R).
+
+% ИМПЛЕМЕНТАЦИЯ:
+fld(R, FldR) :-
+    dom(R, DomR), rng(R, RngR), union(DomR, RngR, FldR).
+
+% ДОКУМЕНТАЦИЯ:
+% composition(+R, +S, -RCompS):
+% мн(RCompS) е композицията на мн(R) и мн(S).
+
+% ИМПЛЕМЕНТАЦИЯ:
+composition([], _, []).
+composition([EA|RestA], B, ACompB) :-
+    composition(RestA, B, RestACompB),
+    singleton_composition(EA, B, EACompB),
+    union(EACompB, RestACompB, ACompB).
+
+% ДОКУМЕНТАЦИЯ:
+% singleton_composition(+X, +A, -SgXCompA):
+% мн(SgXCompA) е композицията на { об(X) } и мн(A).
+
+% ИМПЛЕМЕНТАЦИЯ:
+singleton_composition(_, [], []).
+singleton_composition((X, Y), [(Z, _)|RestA], SgXYCompRestA) :-
+    singleton_composition((X, Y), RestA, SgXYCompRestA),
+    Y \= Z.
+singleton_composition((X, Y), [(Y, Z)|RestA], [(X, Z)|SgXYCompRestA]) :-
+    singleton_composition((X, Y), RestA, SgXYCompRestA).
+
+% ДОКУМЕНТАЦИЯ:
+% power_compose(+R, +N, -RToThePowerOfN):
+% мн(RToThePowerOfN) е N-кратната композиция 
+% на мн(R) със себе си.
+
+% ИМПЛЕМЕНТАЦИЯ:
+power_compose(R, 0, Id) :- fld(R, FldR), identity(FldR, Id).
+power_compose(R, N, RToThePowerOfN) :-
+    N > 0, NMinus1 is N - 1,
+    power_compose(R, NMinus1, RToThePowerOfNMinus1),
+    composition(RToThePowerOfNMinus1, R, RToThePowerOfN).
+
+% ДОКУМЕНТАЦИЯ:
+% identity(X, IdX):
+% мн(IdX) е идентитетът върху мн(X).
+
+% ИМПЛЕМЕНТАЦИЯ:
+identity([], []).
+identity([EX|RestX], [(EX, EX)|IdRestX]) :- identity(RestX, IdRestX).
+
+% ДОКУМЕНТАЦИЯ:
+% accumulate_power_compose(+R, +N, -X):
+% мн(X) е обединението от K-кратната 
+% композиция на мн(R) със себе си за 
+% К между 0 и N.
+
+% ИМПЛЕМЕНТАЦИЯ:
+accumulate_power_compose(R, 0, Id) :- power_compose(R, 0, Id).
+accumulate_power_compose(R, N, X) :- N > 0, NMinus1 is N - 1,
+    accumulate_power_compose(R, NMinus1, Y),
+    power_compose(R, N, Z),
+    union(Y, Z, X).
+
+% ДОКУМЕНТАЦИЯ:
+% trcl(+R, -TrclR):
+% мн(TrclR) е транзитивното и рефлексивно 
+% затваряне на мн(R).
+
+% ИМПЛЕМЕНТАЦИЯ:
+trcl(R, TrclR) :-
+    fld(R, FR), len(FR, N),
+    accumulate_power_compose(R, N, TrclR).
