@@ -186,12 +186,24 @@ subsequence([], []).
 subsequence([_|L], M) :- subsequence(L, M).
 subsequence([X|L], [X|M]) :- subsequence(L, M).
 
+% ДОКУМЕНТАЦИЯ:
 % to_unique(+L, M):
 % M се получава от L чрез премахване 
 % на всички повторения.
+
+% ИМПЛЕМЕНТАЦИЯ:
 to_unique([], []).
 to_unique([X|L], M) :- to_unique(L, M), member(X, M).
 to_unique([X|L], [X|M]) :- to_unique(L, M), not(member(X, M)).
+
+% ДОКУМЕНТАЦИЯ:
+% seq_with_len(+Dom, +N, L):
+% L е списък с дължина N, който 
+% съдържа елементи само от Dom.
+
+% ИМПЛЕМЕНТАЦИЯ:
+seq_with_len(_, 0, []).
+seq_with_len(Dom, N, [X|L]) :- N > 0, NMinus1 is N - 1, member(X, Dom), seq_with_len(Dom, NMinus1, L).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                     МНОЖЕСТВА
@@ -595,3 +607,242 @@ member_cumulative(N, X) :- cumulative(N, Vn), member(X, Vn).
 % ИМПЛЕМЕНТАЦИЯ:
 cumulative(0, []).
 cumulative(N, Vn) :- N > 0, NMinus1 is N - 1, cumulative(NMinus1, Vnminus1), powerset(Vnminus1, Vn).
+
+% ДОКУМЕНТАЦИЯ:
+% sigma_star(+Sigma, L):
+% L е редица с елементи от Sigma.
+
+% ИМПЛЕМЕНТАЦИЯ:
+sigma_star(_, []).
+sigma_star(Sigma, [X|L]) :- sigma_star(Sigma, L), member(X, Sigma).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                       ГРАФИ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ПРЕДСТАВЯНЕ НА ГРАФИ В ПРОЛОГ:
+% Един граф G = (V, E) ще представяме като
+% двойка (VR, ER), където VR, ER са представянията 
+% съответно на V и на E, с разликата, че при 
+% неориентирани няма да използваме [X, Y] за 
+% двуелементни множества (ребра), а ще използваме 
+% записа (X, Y), както е по конвенция. Отново с
+% об(X) ще бележим истинския обект, който 
+% представяме в Пролог чрез X.
+
+% ВАЖНО:
+% За предикатите в тази секция приемаме, че 
+% се подава валидно представяне на граф. Това 
+% е важно за коректност на документацията.
+
+% ДОКУМЕНТАЦИЯ:
+% vertex(+G, X):
+% об(X) е връх в графа об(G).
+
+% ИМПЛЕМЕНТАЦИЯ:
+vertex((V, _), X) :- member(X, V).
+
+% ДОКУМЕНТАЦИЯ:
+% edge(+G, X, Y):
+% (об(X), об(Y)) е ребро в графа об(G).
+
+% ИМПЛЕМЕНТАЦИЯ:
+edge((_, E), X, Y) :-
+    member((X, Y), E);
+    member((Y, X), E).
+
+% ДОКУМЕНТАЦИЯ:
+% directed_edge(+G, X, Y):
+% (об(X), об(Y)) е ребро в ориентирания граф об(G).
+
+% ИМПЛЕМЕНТАЦИЯ:
+directed_edge((_, E), X, Y) :- member((X, Y), E).
+
+% ДОКУМЕНТАЦИЯ:
+% is_path(+G, +P):
+% об(P) е път в графа об(G).
+
+% ИМПЛЕМЕНТАЦИЯ:
+is_path(G, P) :-
+    not((
+            adjacent(V1, V2, P),
+            not(edge(G, V1, V2))
+        )).
+
+% ДОКУМЕНТАЦИЯ:
+% is_directed_path(+G, +P):
+% об(P) е път в ориентирания граф об(G).
+
+% ИМПЛЕМЕНТАЦИЯ:
+is_directed_path(G, P) :-
+    not((
+            adjacent(V1, V2, P),
+            not(directed_edge(G, V1, V2))
+        )).
+
+% ДОКУМЕНТАЦИЯ:
+% is_cycle(+G, +C):
+% об(C) е (прост) цикъл в графа об(G).
+
+% ИМПЛЕМЕНТАЦИЯ:
+is_cycle(G, C) :-
+    is_path(G, C),
+    append([X|Y], [X], C), Y \= [].
+
+% ДОКУМЕНТАЦИЯ:
+% is_directed_cycle(+G, +C):
+% об(C) е (прост) цикъл в ориентирания граф об(G).
+
+% ИМПЛЕМЕНТАЦИЯ:
+is_directed_cycle(G, C) :-
+    is_directed_path(G, C),
+    append([X|_], [X], C).
+
+% ДОКУМЕНТАЦИЯ:
+% simple_path(+G, P):
+% об(P) е прост път в графа об(G).
+
+% ИМПЛЕМЕНТАЦИЯ:
+simple_path((V, E), P) :-
+    perm(V, PV),
+    subsequence(PV, P),
+    is_path((V, E), P).
+
+% ДОКУМЕНТАЦИЯ:
+% directed_simple_path(+G, P):
+% об(P) е прост път в ориентирания граф об(G).
+
+% ИМПЛЕМЕНТАЦИЯ:
+directed_simple_path((V, E), P) :-
+    perm(V, PV),
+    subsequence(PV, P),
+    is_directed_path((V, E), P).
+
+% ДОКУМЕНТАЦИЯ:
+% cycle(+G, C):
+% об(C) е (прост) цикъл в графа об(G).
+
+% ИМПЛЕМЕНТАЦИЯ:
+cycle((V, E), C) :-
+    len([_|V], NPlus1),
+    between(3, NPlus1, K),
+    seq_with_len(V, K, C),
+    is_cycle((V, E), C).
+
+% ДОКУМЕНТАЦИЯ:
+% directed_cycle(+G, C):
+% об(C) е (прост) цикъл в ориентирания граф об(G).
+
+% ИМПЛЕМЕНТАЦИЯ:
+directed_cycle((V, E), C) :-
+    len([_|V], NPlus1),
+    between(2, NPlus1, K),
+    seq_with_len(V, K, C),
+    is_directed_cycle((V, E), C).
+
+% ДОКУМЕНТАЦИЯ:
+% is_cyclic(+G):
+% об(G) е цикличен граф.
+
+% ИМПЛЕМЕНТАЦИЯ:
+is_cyclic(G) :- cycle(G, _).
+
+% ДОКУМЕНТАЦИЯ:
+% is_directed_cyclic(+G):
+% об(G) е ориентиран цикличен граф.
+
+% ИМПЛЕМЕНТАЦИЯ:
+is_directed_cyclic(G) :- directed_cycle(G, _).
+
+% ДОКУМЕНТАЦИЯ:
+% path(+G, P):
+% об(P) е път в графа об(G).
+
+% ИМПЛЕМЕНТАЦИЯ:
+path((V, E), P) :-
+    edge((V, E), _, _),
+    sigma_star(V, P),
+    is_path((V, E), P).
+path(G, P) :-
+    not(edge(G, _, _)),
+    simple_path(G, P).
+
+% ДОКУМЕНТАЦИЯ:
+% directed_path(+G, P):
+% об(P) е път в ориентирания граф об(G).
+
+% ИМПЛЕМЕНТАЦИЯ:
+directed_path((V, E), P) :-
+    is_directed_cyclic((V, E)),
+    sigma_star(V, P),
+    is_directed_path((V, E), P).
+directed_path(G, P) :-
+    not(is_directed_cyclic(G)),
+    directed_simple_path(G, P).
+
+% ДОКУМЕНТАЦИЯ:
+% connected(+G):
+% об(G) е свързан граф.
+
+% ИМПЛЕМЕНТАЦИЯ:
+connected(G) :-
+    not((
+            vertex(G, X),
+            vertex(G, Y),
+            not((
+                    simple_path(G, P),
+                    append([X|_], [Y], P)
+                ))
+        )).
+
+% ДОКУМЕНТАЦИЯ:
+% strongly_connected(+G):
+% об(G) е силно свързан ориентиран граф.
+
+% ИМПЛЕМЕНТАЦИЯ:
+strongly_connected(G) :-
+    not((
+            vertex(G, X),
+            vertex(G, Y),
+            not((
+                    directed_simple_path(G, P),
+                    append([X|_], [Y], P)
+                ))
+        )).
+
+% ДОКУМЕНТАЦИЯ:
+% tree(+T):
+% об(G) е дърво.
+
+% ИМПЛЕМЕНТАЦИЯ:
+tree(T) :- connected(T), not(is_cyclic(T)).
+
+% ДОКУМЕНТАЦИЯ:
+% dag(+G):
+% об(G) e ориентиран ацикличен граф.
+
+% ИМПЛЕМЕНТАЦИЯ:
+dag(G) :- not(is_directed_cyclic(G)).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                ЗАДАЧИ ОТ КОНТРОЛНИ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+p(XXS) :- not(предпоследен(_, XXS)).
+p(XXS) :-
+    предпоследен(XS, XXS),
+    not((
+            not(четна_позиция(X, XS));
+            елемент(XS1, XXS), предпоследен(X1, XS1), нод(X, X1, 1)
+        )).
+
+четна_позиция(Y, [_|[X|L]]) :- Y = X; четна_позиция(Y, L).
+нечетна_позиция(X, L) :- четна_позиция(X, [_|L]).
+
+предпоследен(X, [X, _]).
+предпоследен(X, [_|L]) :- предпоследен(X, L).
+
+елемент(X, [Y|L]) :- Y = X; елемент(X, L).
+
+нод(A, 0, A).
+нод(A, B, C) :- B \= 0, R is A mod B, нод(B, R, C).
