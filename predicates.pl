@@ -111,7 +111,8 @@ suffix(SuffL, L) :- append(_, SuffL, L).
 % InfL е инфикс на L.
 
 % ИМПЛЕМЕНТАЦИЯ:
-infix(InfL, L) :- append(_, X, L), append(InfL, _, X).
+infix(InfL, L) :-
+    append(_, X, L), append(InfL, _, X).
 
 % ДОКУМЕНТАЦИЯ:
 % insert(+L, X, M), insert(L, X, +M):
@@ -123,7 +124,8 @@ insert(L, X, [X|L]).
 insert([Y|L], X, [Y|M]) :- insert(L, X, M).
 
 % ИМПЛЕМЕНТАЦИЯ 2: (втория тип извикване не работи)
-insert2(L, X, M) :- append(A, B, L), append(A, [X|B], M).
+insert2(L, X, M) :-
+    append(A, B, L), append(A, [X|B], M).
 
 % ДОКУМЕНТАЦИЯ:
 % perm(+L, P):
@@ -165,7 +167,8 @@ sort2(L, SL) :- perm(L, SL), is_sorted(SL).
 
 % ИМПЛЕМЕНТАЦИЯ:
 reverse([], []).
-reverse([X|L], RevXL) :- reverse(L, RevL), append(RevL, [X], RevXL).
+reverse([X|L], RevXL) :-
+    reverse(L, RevL), append(RevL, [X], RevXL).
 
 % ИМПЛЕМЕНТАЦИЯ 2:
 reverse2(L, RL) :- reverse_helper(L, RL, []).
@@ -175,7 +178,8 @@ reverse2(L, RL) :- reverse_helper(L, RL, []).
 % на неговите елементи и слепване
 % на Acc накрая.
 reverse_helper([], RL, RL).
-reverse_helper([X|L], RXL, Acc) :- reverse_helper(L, RXL, [X|Acc]).
+reverse_helper([X|L], RXL, Acc) :-
+    reverse_helper(L, RXL, [X|Acc]).
 
 % ДОКУМЕНТАЦИЯ:
 % subsequence(+L, SL):
@@ -193,8 +197,10 @@ subsequence([X|L], [X|M]) :- subsequence(L, M).
 
 % ИМПЛЕМЕНТАЦИЯ:
 to_unique([], []).
-to_unique([X|L], M) :- to_unique(L, M), member(X, M).
-to_unique([X|L], [X|M]) :- to_unique(L, M), not(member(X, M)).
+to_unique([X|L], M) :-
+    to_unique(L, M), member(X, M).
+to_unique([X|L], [X|M]) :-
+    to_unique(L, M), not(member(X, M)).
 
 % ДОКУМЕНТАЦИЯ:
 % seq_with_len(+Dom, +N, L):
@@ -203,7 +209,10 @@ to_unique([X|L], [X|M]) :- to_unique(L, M), not(member(X, M)).
 
 % ИМПЛЕМЕНТАЦИЯ:
 seq_with_len(_, 0, []).
-seq_with_len(Dom, N, [X|L]) :- N > 0, NMinus1 is N - 1, member(X, Dom), seq_with_len(Dom, NMinus1, L).
+seq_with_len(Dom, N, [X|L]) :-
+    N > 0, NMinus1 is N - 1,
+    member(X, Dom),
+    seq_with_len(Dom, NMinus1, L).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                     МНОЖЕСТВА
@@ -224,7 +233,9 @@ seq_with_len(Dom, N, [X|L]) :- N > 0, NMinus1 is N - 1, member(X, Dom), seq_with
 % мн(X) е подмножество на мн(Y).
 
 % ИМПЛЕМЕНТАЦИЯ:
-subset(X, Y) :- subsequence(Y, X1), to_unique(X1, X).
+subset(X, Y) :-
+    subsequence(Y, X1),
+    to_unique(X1, X).
 
 % ДОКУМЕНТАЦИЯ:
 % powerset(+X, -PX):
@@ -232,7 +243,8 @@ subset(X, Y) :- subsequence(Y, X1), to_unique(X1, X).
 
 % ИМПЛЕМЕНТАЦИЯ:
 powerset(X, PX) :-
-    powerset_helper(X, PX1, []), to_unique(PX1, PX).
+    powerset_helper(X, PX1, []),
+    to_unique(PX1, PX).
 
 % ДОКУМЕНТАЦИЯ:
 % powerset_helper(+X, -PX, +Acc):
@@ -240,10 +252,11 @@ powerset(X, PX) :-
 % обединено с мн(Acc).
 
 % ИМПЛЕМЕНТАЦИЯ:
-powerset_helper(X, PX, PX) :- not((
-                                      subset(SX, X),
-                                      not(member(SX, PX))
-                                  )).
+powerset_helper(X, PX, PX) :-
+    not((
+            subset(SX, X),
+            not(member(SX, PX))
+        )).
 powerset_helper(X, PX, Acc) :-
     subset(SX, X),
     not(member(SX, Acc)),
@@ -267,7 +280,8 @@ intersection(X, Y, XAndY) :-
 % мн(XUY) е обединението на мн(X) и мн(Y).
 
 % ИМПЛЕМЕНТАЦИЯ:
-union(X, Y, XUY) :- append(X, Y, Z), to_unique(Z, XUY).
+union(X, Y, XUY) :-
+    append(X, Y, Z), to_unique(Z, XUY).
 
 % ДОКУМЕНТАЦИЯ:
 % difference(+X, +Y, -XMinusY):
@@ -275,8 +289,12 @@ union(X, Y, XUY) :- append(X, Y, Z), to_unique(Z, XUY).
 
 % ИМПЛЕМЕНТАЦИЯ:
 difference([], _, []).
-difference([E|X], Y, Z) :- difference(X, Y, Z), (member(E, Y); member(E, X)).
-difference([E|X], Y, [E|Z]) :- difference(X, Y, Z), not((member(E, X); member(E, Y))).
+difference([E|X], Y, Z) :-
+    difference(X, Y, Z),
+    (member(E, Y); member(E, X)).
+difference([E|X], Y, [E|Z]) :-
+    difference(X, Y, Z),
+    not((member(E, X); member(E, Y))).
 
 % ДОКУМЕНТАЦИЯ:
 % cartesian_product(+A, +B, -AxB):
@@ -313,14 +331,16 @@ is_relation(R) :- not((member(X, R), X \= (_, _))).
 
 % ИМПЛЕМЕНТАЦИЯ:
 dom([], []).
-dom([(A, _)|RestR], [A|DomRestR]) :- dom(RestR, DomRestR).
+dom([(A, _)|RestR], [A|DomRestR]) :-
+    dom(RestR, DomRestR).
 
 % ДОКУМЕНТАЦИЯ:
 % rng(+R, -RngR):
 % мн(RngR) е областта от стойности на мн(R).
 
 % ИМПЛЕМЕНТАЦИЯ:
-rng(R, RngR) :- inverse(R, RInverse), dom(RInverse, RngR).
+rng(R, RngR) :-
+    inverse(R, RInverse), dom(RInverse, RngR).
 
 % ДОКУМЕНТАЦИЯ:
 % inverse(+R, -RInverse):
@@ -368,7 +388,8 @@ singleton_composition((X, Y), [(Y, Z)|RestA], [(X, Z)|SgXYCompRestA]) :-
 % на мн(R) със себе си.
 
 % ИМПЛЕМЕНТАЦИЯ:
-power_compose(R, 0, Id) :- fld(R, FldR), identity(FldR, Id).
+power_compose(R, 0, Id) :-
+    fld(R, FldR), identity(FldR, Id).
 power_compose(R, N, RToThePowerOfN) :-
     N > 0, NMinus1 is N - 1,
     power_compose(R, NMinus1, RToThePowerOfNMinus1),
@@ -380,7 +401,8 @@ power_compose(R, N, RToThePowerOfN) :-
 
 % ИМПЛЕМЕНТАЦИЯ:
 identity([], []).
-identity([EX|RestX], [(EX, EX)|IdRestX]) :- identity(RestX, IdRestX).
+identity([EX|RestX], [(EX, EX)|IdRestX]) :-
+    identity(RestX, IdRestX).
 
 % ДОКУМЕНТАЦИЯ:
 % accumulate_power_compose(+R, +N, -X):
@@ -389,8 +411,10 @@ identity([EX|RestX], [(EX, EX)|IdRestX]) :- identity(RestX, IdRestX).
 % К между 0 и N.
 
 % ИМПЛЕМЕНТАЦИЯ:
-accumulate_power_compose(R, 0, Id) :- power_compose(R, 0, Id).
-accumulate_power_compose(R, N, X) :- N > 0, NMinus1 is N - 1,
+accumulate_power_compose(R, 0, Id) :-
+    power_compose(R, 0, Id).
+accumulate_power_compose(R, N, X) :-
+    N > 0, NMinus1 is N - 1,
     accumulate_power_compose(R, NMinus1, Y),
     power_compose(R, N, Z),
     union(Y, Z, X).
@@ -437,7 +461,8 @@ sum(N, s(M), s(K)) :- sum(N, M, K).
 
 % ИМПЛЕМЕНТАЦИЯ:
 product(_, 0, 0).
-product(N, s(M), K) :- product(N, M, K1), sum(K1, N, K).
+product(N, s(M), K) :-
+    product(N, M, K1), sum(K1, N, K).
 
 % ДОКУМЕНТАЦИЯ:
 % nat(N):
@@ -482,7 +507,8 @@ pair(A, B) :- nat(N), sum_partition(N, A, B).
 % числа A и B е N.
 
 % ИМПЛЕМЕНТАЦИЯ:
-sum_partition(N, A, B) :- between1(0, N, A), B is N - A.
+sum_partition(N, A, B) :-
+    between1(0, N, A), B is N - A.
 
 % ДОКУМЕНТАЦИЯ:
 % between1(+Low, +High, X);
@@ -490,15 +516,20 @@ sum_partition(N, A, B) :- between1(0, N, A), B is N - A.
 % X, Low и High са естествени.
 
 % ИМПЛЕМЕНТАЦИЯ:
-between1(A, B, A) :- A =< B.
-between1(A, B, X) :- A < B, A1 is A + 1, between1(A1, B, X).
+between1(A, B, A) :-
+    A =< B.
+between1(A, B, X) :-
+    A < B, A1 is A + 1,
+    between1(A1, B, X).
 
 % ДОКУМЕНТАЦИЯ:
 % triple(A, B, C):
 % A, B и C са естествени числа.
 
 % ИМПЛЕМЕНТАЦИЯ:
-triple(A, B, C) :- nat(N), sum_partition(N, A, B, C).
+triple(A, B, C) :-
+    nat(N),
+    sum_partition(N, A, B, C).
 
 % ДОКУМЕНТАЦИЯ:
 % sum_partition(+N, A, B, C):
@@ -528,7 +559,10 @@ sum_partition(N, A, B, C) :-
 
 % ИМПЛЕМЕНТАЦИЯ:
 genKS(0, 0, []).
-genKS(K, S, [X|L]) :- K > 0, between1(0, S, X), K1 is K - 1, S1 is S - X, genKS(K1, S1, L).
+genKS(K, S, [X|L]) :-
+    K > 0, K1 is K - 1,
+    between1(0, S, X), S1 is S - X,
+    genKS(K1, S1, L).
 
 
 % ДОКУМЕНТАЦИЯ:
@@ -552,10 +586,21 @@ finite_sequence(L) :- pair(K, S), genKS(K, S, L).
 % участват най-много N операции.
 
 % ИМПЛЕМЕНТАЦИЯ:
-regex(R, 0) :- member(R, [a, b, празнадума, празномножество]).
-regex(R1 + R2, N) :- N > 0, NMinus1 is N - 1, sum_partition(NMinus1, N1, N2), regex(R1, N1), regex(R2, N2).
-regex(R1 * R2, N) :- N > 0, NMinus1 is N - 1, sum_partition(NMinus1, N1, N2), regex(R1, N1), regex(R2, N2).
-regex(звезда(R), N) :- N > 0, NMinus1 is N - 1, regex(R, NMinus1).
+regex(R, 0) :-
+    member(R, [a, b, празнадума, празномножество]).
+regex(R1 + R2, N) :-
+    N > 0, NMinus1 is N - 1,
+    sum_partition(NMinus1, N1, N2),
+    regex(R1, N1),
+    regex(R2, N2).
+regex(R1 * R2, N) :-
+    N > 0, NMinus1 is N - 1,
+    sum_partition(NMinus1, N1, N2),
+    regex(R1, N1),
+    regex(R2, N2).
+regex(звезда(R), N) :-
+    N > 0, NMinus1 is N - 1,
+    regex(R, NMinus1).
 
 % ПРИМЕР ЗА ИЗРАЗ И СЪОТВЕТНОТО МУ ДЪРВО:
 % Израз: празномножество * ((a + b) * a)
@@ -589,7 +634,8 @@ regex(R) :- nat(N), regex(R, N).
 % в кумулативната йерархия.
 
 % ИМПЛЕМЕНТАЦИЯ:
-member_cumulative(X) :- nat(N), member_cumulative(N, X).
+member_cumulative(X) :-
+    nat(N), member_cumulative(N, X).
 
 % ДОКУМЕНТАЦИЯ:
 % member_cumulative(N, X):
@@ -597,7 +643,8 @@ member_cumulative(X) :- nat(N), member_cumulative(N, X).
 % в кумулативната йерархия.
 
 % ИМПЛЕМЕНТАЦИЯ:
-member_cumulative(N, X) :- cumulative(N, Vn), member(X, Vn).
+member_cumulative(N, X) :-
+    cumulative(N, Vn), member(X, Vn).
 
 % ДОКУМЕНТАЦИЯ:
 % cumulative(N, Vn):
@@ -606,7 +653,10 @@ member_cumulative(N, X) :- cumulative(N, Vn), member(X, Vn).
 
 % ИМПЛЕМЕНТАЦИЯ:
 cumulative(0, []).
-cumulative(N, Vn) :- N > 0, NMinus1 is N - 1, cumulative(NMinus1, Vnminus1), powerset(Vnminus1, Vn).
+cumulative(N, Vn) :-
+    N > 0, NMinus1 is N - 1,
+    cumulative(NMinus1, Vnminus1),
+    powerset(Vnminus1, Vn).
 
 % ДОКУМЕНТАЦИЯ:
 % sigma_star(+Sigma, L):
@@ -614,7 +664,8 @@ cumulative(N, Vn) :- N > 0, NMinus1 is N - 1, cumulative(NMinus1, Vnminus1), pow
 
 % ИМПЛЕМЕНТАЦИЯ:
 sigma_star(_, []).
-sigma_star(Sigma, [X|L]) :- sigma_star(Sigma, L), member(X, Sigma).
+sigma_star(Sigma, [X|L]) :-
+    sigma_star(Sigma, L), member(X, Sigma).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                       ГРАФИ
