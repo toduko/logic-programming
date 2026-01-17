@@ -429,6 +429,93 @@ trcl(R, TrclR) :-
     fld(R, FR), len(FR, N),
     accumulate_power_compose(R, N, TrclR).
 
+% ДОКУМЕНТАЦИЯ:
+% refl(+R):
+% мн(R) е рефлексивна релация.
+
+% ИМПЛЕМЕНТАЦИЯ:
+refl(R) :-
+    is_relation(R),
+    not((
+            fld(R, FR), member(X, FR),
+            not(member((X, X), R))
+        )).
+
+% ДОКУМЕНТАЦИЯ:
+% antisym(+R):
+% мн(R) е антисиметрична релация.
+
+% ИМПЛЕМЕНТАЦИЯ:
+antisym(R) :-
+    is_relation(R),
+    not((
+            member((X, Y), R), member((Y, X), R),
+            X \= Y
+        )).
+
+% ДОКУМЕНТАЦИЯ:
+% trans(+R):
+% мн(R) е транзитивна релация.
+
+% ИМПЛЕМЕНТАЦИЯ:
+trans(R) :-
+    is_relation(R),
+    not((
+            member((X, Y), R), member((Y, Z), R),
+            not(member((X, Z), R))
+        )).
+
+% ДОКУМЕНТАЦИЯ:
+% strongly_connected_rel(+R):
+% Всички елементи във Fld(мн(R)) 
+% са сравними спрямо мн(R).
+
+% ИМПЛЕМЕНТАЦИЯ:
+strongly_connected_rel(R) :-
+    is_relation(R),
+    not((
+            fld(R, FR),
+            member(X, FR),
+            member(Y, FR),
+            not((
+                    member((X, Y), R);
+                    member((Y, X), R)
+                ))
+        )).
+
+% ДОКУМЕНТАЦИЯ:
+% partial_order(+R):
+% мн(R) е частична наредба.
+
+% ИМПЛЕМЕНТАЦИЯ:
+partial_order(R) :-
+    refl(R),
+    antisym(R),
+    trans(R).
+
+% ДОКУМЕНТАЦИЯ:
+% linear_order(+R):
+% мн(R) е линейна наредба.
+
+% ИМПЛЕМЕНТАЦИЯ:
+linear_order(R) :-
+    partial_order(R),
+    strongly_connected_rel(R).
+
+% ДОКУМЕНТАЦИЯ:
+% topo_sort(+R, -TR):
+% мн(TR) е линейна наредба, 
+% която разширява частичната 
+% наредба мн(R).
+
+% ИМПЛЕМЕНТАЦИЯ:
+topo_sort(R, TR) :-
+    partial_order(R),
+    fld(R, FR),
+    subset(TR, FR),
+    subset(R, TR),
+    linear_order(TR).
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                БЕЗКРАЙНИ ГЕНЕРАТОРИ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -897,3 +984,54 @@ p(XXS) :-
 
 нод(A, 0, A).
 нод(A, B, C) :- B \= 0, R is A mod B, нод(B, R, C).
+
+generate_aperiodic_sequence(X) :-
+    nat(N), X is N mod 2, between(0, N, _).
+
+flatten(X, [X]) :- not(is_list(X)).
+flatten([], []).
+flatten([X|L], F) :-
+    flatten(X, FX), flatten(L, FL), append(FX, FL, F).
+
+max_independent(S, M) :-
+    subset(M, S),
+    independent_property(M),
+    not((
+            subset(M1, S),
+            independent_property(M1),
+            len(M1, L1),
+            len(M, L),
+            L1 > L
+        )).
+
+independent_property(M) :-
+    not((
+            member(C1, M),
+            member(C2, M),
+            intersecting_unit_circles(C1, C2)
+        )).
+
+intersecting_unit_circles((Ax1, Ay1, Bx1, By1), (Ax2, Ay2, Bx2, By2)) :-
+    LHS is ((Bx2 * Ax1 - Bx1 * Ax2) ** 2) * (By1 ** 2) * (By2 ** 2)
+           + ((By2 * Ay1 - By1 * Ay2) ** 2) * (Bx1 ** 2) * (Bx2 ** 2),
+    RHS is 4 * (Bx1 ** 2) * (Bx2 ** 2) * (By1 ** 2) * (By2 ** 2),
+    LHS =< RHS.
+
+gen_filter(P, Leq, F) :-
+    subset(F, P),
+    F \= [],
+    not((
+            member(X, F),
+            member(Y, P),
+            member((X, Y), Leq),
+            not(member(Y, F))
+        )),
+    not((
+            member(X, F),
+            member(Y, F),
+            not((
+                    member(Z, F),
+                    member((X, Z), Leq),
+                    member((Y, Z), Leq)
+                ))
+        )).
