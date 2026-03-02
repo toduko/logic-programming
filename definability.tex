@@ -206,7 +206,7 @@
 Разглеждаме предикатния език $\calL$, съставен от два триместни предикатни символа $\operatorname{shift}$ и $\operatorname{mult}$, заедно с $\calL$-структурата $\calS = \opair{\Q^+ \cup \calF, \operatorname{shift}^{\calS}, \operatorname{mult}^{\calS}}$, където:
 \begin{align*}
     \operatorname{shift}^\calS(f, n, g) & \dequiv f, g \in \calF, \; n \in \N \text{ и за всяко } k \in \N \text{ е изпълнено, че } f(n + k) = g(k) \\
-    \operatorname{mult}^\calS(f, n, g)  & \dequiv f \in \calF, \; n \in \N, \; q \in \Q^+ \text{ и } f(0) = \frac{q}{n}.
+    \operatorname{mult}^\calS(f, n, q)  & \dequiv f \in \calF, \; n \in \N, \; q \in \Q^+ \text{ и } n f(0) = q.
 \end{align*}
 Да се докаже, че следните множества са определими в $\calS$ с формули от $\calL$:
 \begin{itemize}
@@ -214,7 +214,7 @@
     \item[б)] $\{ \opair{n, m, k} \in \N^3 \mid n + m = k \}$;
     \item[в)] $\{ \opair{n, m} \in \N^2 \mid n \leq m \}$;
     \item[г)] $\{ \opair{a, b} \in (\Q^+)^2 \mid a \leq b \}$;
-    \item[д)] $\{ f \in \calF \mid \text{за всяко } n \in \N \text{ е изпълнено, че } f(n) \leq f(n + 1) \}$.
+    \item[д)] $\{ f \in \calF \mid \text{за всяко } n \in \N \text{ е изпълнено, че } 0 < f(n) \leq f(n + 1) \}$.
 \end{itemize}
 Нека за $X \subseteq \R$ дефинираме множеството:
 \[
