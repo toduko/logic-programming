@@ -1,0 +1,288 @@
+\documentclass[12pt]{article}
+\usepackage[english, bulgarian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{amssymb}
+\usepackage{hyperref, fancyhdr, lastpage, fancyvrb, tcolorbox, titlesec}
+\usepackage{array, tabularx, colortbl}
+\usepackage{tikz}
+\usepackage{venndiagram}
+\usepackage{amsthm, bm}
+\usepackage{relsize}
+\usepackage{amsmath,physics}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{scalerel}
+\usepackage{theoremref}
+\usepackage{circuitikz}
+\usepackage{geometry}
+\usepackage{stmaryrd}
+\usepackage{forest}
+\usepackage{cancel}
+\usepackage{faktor}
+\usepackage{gensymb}
+\usetikzlibrary{automata, arrows, positioning, shapes}
+\useforestlibrary{linguistics}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\opair}{m}
+ {
+  \langle\mspace{2mu}
+  \clist_set:Nn \l_tmpa_clist { #1 }
+  \clist_use:Nn \l_tmpa_clist {,\mspace{3mu plus 1mu minus 1mu}\allowbreak}
+  \mspace{2mu}\rangle
+}
+\ExplSyntaxOff
+
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    linkcolor=blue
+}
+
+\setlength\parindent{0pt}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+
+\newcommand{\vars}{\operatorname{Vars}}
+\newcommand{\free}{\operatorname{Free}}
+
+\newcommand{\logand}{\; \& \;}
+
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calZ}{\mathcal{Z}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calB}{\mathcal{B}}
+
+\newcommand{\dequiv}{\stackrel{\text{деф.}}{\longleftrightarrow}}
+
+\newcommand{\db}[1]{\llbracket #1 \rrbracket}
+
+\DeclareMathOperator*{\bigand}{\scalerel*{\&}{\prod}}
+\DeclareMathOperator*{\bigor}{\scalerel*{\lor}{\sum}}
+
+\newtheorem*{definition}{Дефиниция}
+\newtheorem*{claim}{Твърдение}
+\newtheorem*{property}{Свойство}
+\newtheorem*{hint}{Упътване}
+\theoremstyle{definition}
+\newtheorem*{solution}{Решение}
+\newtheorem*{notation}{Нотация}
+\newtheorem{problem}{Задача}
+
+\title{Решения на задачите от К1 по ЛП на специалност `Информатика`, проведено на 28.03.2026 г.}
+% \author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{problem}
+Нека $\Sigma = \{ a, b \}$.
+За дума $\alpha \in \Sigma^*$ и естествено число $n$, със $\alpha[i]$ бележим $i$-тия символ на $\alpha$.
+Например $abab[0] = a, abab[1] = b, abab[2] = a, abab[3] = b$.
+Разглеждаме предикатния език с равенство $\calL$, съставен от триместен предикатен символ $p$ и двуместен функционален символ $f$, заедно със $\calL$-структурата $\calM = \opair{\Sigma^* \cup \N, p^\calA, f^\calA}$, където:
+\begin{align*}
+  p^\calM(n, m, k) & \dequiv n, m, k \in \N \text{ и } n + m = k \\
+  f^\calM(\alpha, i) & \hspace*{1mm} \stackrel{\text{деф.}}{=} \begin{cases}
+                                                                  0, \text{ ако } \alpha[i] = a                    \\
+                                                                  1, \text{ ако } \alpha[i] = b                    \\
+                                                                  2, \text{ ако } \alpha[i] \text{ не е дефинирано.}
+                                                               \end{cases}
+\end{align*}
+В случай че $\alpha \not \in \Sigma^*$ или $i \not \in \N$ или $|\alpha| < i$, $\alpha[i]$ няма да бъде дефинирано.
+Когато искаме да кажем, че $\alpha[i]$ е дефинирано, ще пишем:
+\[
+  \alpha[i] \in \Sigma.
+\]
+Да се докаже, че всеки регулярен език е определим.
+\end{problem}
+
+\begin{solution}
+Започваме с формули за двата сорта:
+\begin{align*}
+  \varphi_\N[x] & \leftrightharpoons \exists y \exists z p(x, y, z) \\
+  \varphi_{\Sigma^*}[x] & \leftrightharpoons \neg \varphi_\N[x].
+\end{align*}
+Както е правено на упражнения, човек може да дефинира формули $\varphi_{\leq}[x, y], \varphi_{<}[x, y]$ и $\varphi_n[x]$ (за $n \in \{ 0, 1, 2 \}$), за които:
+\begin{align*}
+  \calM \models \varphi_{\leq} \db{n, m} & \longleftrightarrow n, m \in \N \text{ и } n \leq m \\
+  \calM \models \varphi_< \db{n, m} & \longleftrightarrow n, m \in \N \text{ и } n < m \\
+  \calM \models \varphi_n \db{m} & \longleftrightarrow m \in \N \text{ и } m = n.
+\end{align*}
+Пишем следната формула, за да определим дължина на дума:
+\[
+  \varphi_{lh}[x, y] \leftrightharpoons \varphi_{\Sigma^*}[x] \logand \varphi_\N[y] \logand \forall z \big( \varphi_\N[z] \Rightarrow (\varphi_<[z, y] \Leftrightarrow \neg \varphi_2[f(x, z)]) \big).
+\]
+Тогава:
+\begin{align*}
+  \calM \models \varphi_{lh}\db{\alpha, n} & \longleftrightarrow \alpha \in \Sigma^*, n \in \N \text{ и за всяко } i \in \N \text{ имаме, че } i < n \text{ тстк } \alpha[i] \in \Sigma \\
+                                           & \longleftrightarrow \alpha \in \Sigma^*, n \in \N \text{ и } |\alpha| = n
+\end{align*}
+От тук директно получаваме формули за базовите регулярни езици:
+\begin{align*}
+  \varphi_\varepsilon[x] & \leftrightharpoons \exists y \big(\varphi_0[y] \logand \varphi_{lh}[x, y]\big) \\ 
+                         & \hspace*{-8mm} \rotatebox[origin=c]{180}{$\Lsh$} \; \varepsilon \text{ е единствената дума с дължина } 0 \\
+  \varphi_a[x]           & \leftrightharpoons \exists y \exists z \big(\varphi_0[y] \logand \varphi_1[z] \logand \varphi_{lh}[x, z] \logand \varphi_0[f(x, y)]\big) \\ 
+                         & \hspace*{-8mm} \rotatebox[origin=c]{180}{$\Lsh$} \; a \text{ е единствената дума с дължина } 1 \text{, която има първи (на позиция $0$) символ } a \\
+  \varphi_b[x]           & \leftrightharpoons \exists y \exists z \big(\varphi_0[y] \logand \varphi_1[z] \logand \varphi_{lh}[x, z] \logand \varphi_1[f(x, y)]\big) \\
+                         & \hspace*{-8mm} \rotatebox[origin=c]{180}{$\Lsh$} \; b \text{ е единствената дума с дължина } 1 \text{, която има първи (на позиция $0$) символ } b \\
+  \varphi_\varnothing[x] & \leftrightharpoons x \not \doteq x \\
+                         & \hspace*{-8mm} \rotatebox[origin=c]{180}{$\Lsh$} \; \text{няма } t \in |\calM| \text{, за което } t \neq t.
+\end{align*}
+Ако $L_1$ и $L_2$ са два регулярни езика с определящи формули съответно $\varphi_{L_1}$ и $\varphi_{L_2}$, то следната формула определя $L_1 \cup L_2$:
+\[
+  \varphi_{L_1 \cup L_2}[x] \leftrightharpoons \varphi_{L_1}[x] \lor \varphi_{L_2}[x].
+\]
+Ще направим формула за конкатенацията, като използваме следната идея:
+\begin{align*}
+  \alpha \cdot \beta = \gamma \longleftrightarrow |\gamma| = |\alpha| + |\beta| & \text{ и за всяко } i < |\gamma| \text{ имаме, че: } \\ 
+                                                                                & \text{ ако } i < |\alpha| \text{, то тогава} \gamma[i] = \alpha[i] \text{, и } \\    
+                                                                                & \text{ ако } i \geq |\alpha| \text{, то тогава } \gamma[i] = \beta[i - |\alpha|].    
+\end{align*}
+За да се убеди човек в това, е достатъчно да си представи как се наслагват буквите в $\gamma = \alpha \cdot \beta$:
+\begin{center}
+  \begin{tabular}{|c|c|c|p{16mm}||p{8mm}|p{16mm}|c|p{24mm}|}
+    \hline
+    \multicolumn{4}{|c||}{$\alpha$} & \multicolumn{4}{c|}{$\beta$} \\
+    \hline
+    $\alpha[0]$ & $\alpha[1]$ & $\dots$ & $\alpha[|\alpha| - 1]$ & $\beta[0]$ & $\beta[1]$ & $\dots$ & $\beta[|\beta| - 1]$ \\
+    \hline
+    \multicolumn{8}{|c|}{$\gamma$} \\
+    \hline
+    $\gamma[0]$ & $\gamma[1]$ & $\dots$ & $\gamma[|\alpha| - 1]$ & $\gamma[|\alpha|]$ & $\gamma[|\alpha| + 1]$ & $\dots$ & $\gamma[|\alpha| + |\beta| - 1]$ \\
+    \hline
+  \end{tabular}
+\end{center}
+Нека за удобство напишем формули за първите/последните няколко символа:
+\begin{align*}
+  \varphi_{first}[x, y, z] & \leftrightharpoons \varphi_{\Sigma^*}[x] \logand \varphi_{lh}[y, z] \logand \underbrace{\forall z_i \big(\varphi_<[z_i, z] \Rightarrow f(x, z_i) \doteq f(y, z_i)\big)}_{\text{тук $z_i$ играе ролята на индекс}} \\
+  \varphi_{last}[x, y, z]  & \leftrightharpoons \exists x_{lh} \exists y' \biggl(\varphi_{lh}[x, x_{lh}] \logand \varphi_{lh}[y, z] \logand p(y', z, x_{lh}) \\ 
+                           & \hspace*{38.5mm} \logand \underbrace{\forall z_i \Bigl(\varphi_<[z_i, z] \Rightarrow \exists y_i \big(p(y', z_i, y_i) \logand f(x, y_i) \doteq f(y, z_i)\big)\Bigl)}_{\text{тук $y_i$ и $z_i$ играят ролята на индекси}}\biggl).
+\end{align*}
+Веднага се вижда, че:
+\begin{align*}
+  \calM \models \varphi_{first}[\alpha, \beta, k] & \longleftrightarrow \alpha, \beta \in \Sigma^*, |\beta| = k \text{ и за всяко } i < k \text{ имаме } \beta[i] = \alpha[i] \\
+  \calM \models \varphi_{last}[\alpha, \beta, k]  & \longleftrightarrow \alpha, \beta \in \Sigma^*, |\beta| = k \text{ и за всяко } i < k \text{ имаме } \beta[i] = \alpha[|\alpha| - k + i].
+\end{align*}
+Така следната формула определя графиката на конкатенацията:
+\begin{align*}
+  \varphi_\cdot[x, y, z] \leftrightharpoons \exists x_{lh} \exists y_{lh} \exists z_{lh} \big(\varphi_{lh}[x, x_{lh}] & \logand \varphi_{lh}[y, y_{lh}] \logand \varphi_{lh}[z, z_{lh}] \\ 
+                                                                                                                      & \logand p(x_{lh}, y_{lh}, z_{lh}) \logand \varphi_{first}[z, x, x_{lh}] \logand \varphi_{last}[z, y, y_{lh}]\big). 
+\end{align*}
+Тогава ако $L_1$ и $L_2$ са два регулярни езика с определящи формули съответно $\varphi_{L_1}$ и $\varphi_{L_2}$, то следната формула определя $L_1 \cdot L_2$:
+\[
+  \varphi_{L_1 \cdot L_2}[x] \leftrightharpoons \exists y \exists z (\varphi_{L_1}[y] \logand \varphi_{L_2}[z] \logand \varphi_\cdot[y, z, x]).
+\]
+За звездата на Клини ще използваме следната идея:
+\[
+  \alpha \in L^* \longleftrightarrow \alpha = \varepsilon \text{ или } \alpha = \beta_1 \cdots \beta_n \text{ за някои } \beta_1, \dots, \beta_n \neq \varepsilon \text{, като } n \geq 1.
+\]
+Тогава ще можем да направим следното съпоставяне:
+\begin{center}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    $\beta_1 \neq \varepsilon$ & $\beta_2 \neq \varepsilon$ & \dots & $\beta_n \neq \varepsilon$ \\
+    \hline
+    $a \cdot b^{|\beta_1| - 1}$ & $a \cdot b^{|\beta_2| - 1}$ & \dots & $a \cdot b^{|\beta_n| - 1}$ \\
+    \hline
+  \end{tabular}
+\end{center}
+Обратно, ако можем да разделим $\alpha$ на такива непразни сектори от $L$, то тогава очевидно ще имаме, че $\alpha \in L^*$.
+
+Отново за удобство пишем формула, която отрязва първите и последните няколко символа от една дума:
+\[
+  \varphi_{cut}[x, y, z_l, z_r] \leftrightharpoons \exists x_l \exists x_{lm} \big(\varphi_\cdot[x_l, y, x_{lm}] \logand \varphi_{first}[x, x_{lm}, z_r] \logand \varphi_{lh}[x_l, z_l]\big).
+\]
+За тази формула имаме:
+\[
+  \calM \models \varphi_{cut}[\alpha, \beta, l, r] \longleftrightarrow \alpha, \beta \in \Sigma^*, l, r \in \N, l \leq r \text{ и }\beta = \alpha[l] \alpha[l + 1] \cdots \alpha[r].
+\]
+Остава само да разграничим секторите, разделени от буквата $a$:
+\begin{align*}
+  \varphi_{sec}[x, y_l, y_r] \leftrightharpoons \exists x_{lh} \Bigl(\varphi_{lh}[x, x_{lh}] & \logand \varphi_\leq[y_l, y_r] \logand \varphi_0[f(x, y_l)] \\ 
+                                                                                           & \logand \forall z_i \big(\varphi_<[y_l, z_i] \logand \varphi_\leq[z_i, y_r] \Rightarrow \varphi_1[f(x, z_i)]\big) \\ 
+                                                                                           & \logand y_r \not \doteq x_{lh} \Rightarrow \exists y_{r + 1} \exists z_1 \big(\varphi_1[z_1] \logand p(y_r, z_1, y_{r + 1}) \\ 
+                                                                                           & \hspace*{54mm} \logand \varphi_0[f(x, y_{r + 1})]\big)\Bigl).
+\end{align*}
+При тази формула имаме:
+\begin{align*}
+  \calM \models \varphi_{sec}\db{\alpha, l, r} & \longleftrightarrow l, r \in \N, \alpha \in \Sigma^*, l \geq r, \alpha[l] = a, \alpha[l + 1] = b, \dots, \alpha[r] = b \\ 
+                                                  & \phantom{\longleftrightarrow blablablablablablablab} \text{ и ако е дефинирано, } \alpha[r + 1] = a \\
+                                                  & \longleftrightarrow \alpha[l] \alpha[l + 1] \dots \alpha[r] \text{ е сектор (в горния смисъл) в } \alpha.
+\end{align*}
+За регулярен език $L$ с определяща формула $\varphi_L$, строим следната формула, която да определя $L^*$:
+\begin{align*}
+  \varphi_{L^*}[x] \leftrightharpoons \exists x' \exists z_0 \exists x_{lh} \biggl(\varphi_{lh}[x, x_{lh}] & \logand \varphi_{lh}[x', x_{lh}] \logand \varphi_0[z_0] \logand \varphi_0[f(x', z_0)] \\ 
+                                                                                                           & \logand \forall y_l \forall y_r \Bigl(\varphi_{sec}[x', y_l, y_r] \Rightarrow \exists x_{lr} \big(\varphi_{cut}[x, x_{lr}, y_l, y_r] \logand \varphi_L[x_{lr}]\big)\Bigl)\biggl) \\ 
+                                                                                                           & \lor \varphi_\varepsilon[x].
+\end{align*}
+Наистина:
+\begin{align*}
+\calM \models \varphi_{L^*}\db{\alpha} & \longleftrightarrow \alpha = \varepsilon \text{ или } \alpha \text{ може да се разбие по подходящ} \\ 
+                                       & \phantom{\longleftrightarrow \alpha = \varepsilon \text{ или } \alpha} \; \text{ начин на непразни сектори от } L \\ 
+                                       & \longleftrightarrow \alpha \in L^*.
+\end{align*}
+Показахме, че $\varnothing, \{ \varepsilon \}, \{ a \}$ и $\{ b \}$ са определими езици и че определимите езици са затворени относно обединение, конкатенация и звезда на Клини.
+Следователно всеки регулярен език е определим.
+\end{solution}
+
+\newpage
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+	 & \varphi_1 : \forall x \forall y \forall z (f(x, f(y, z)) \doteq f(f(x, y), z))       \\
+	 & \varphi_2 : \forall x \forall y \forall z (g(x, g(y, z)) \doteq g(g(x, y), z))       \\
+	 & \varphi_3 : \forall x \forall y \forall z (g(x, f(y, z)) \doteq f(g(x, y), g(x, z))) \\
+	 & \varphi_4 : \forall x \forall y (f(x, g(y, x)) \doteq x)                             \\
+	 & \varphi_5 : \exists x \exists y (f(x, y) \not \doteq g(x, y))                        \\
+\end{align*}
+\end{problem}
+
+Ще бъдат представени две решения на задачата -- едно тарикатско решение и едно естествено решение.
+
+\begin{solution}[тарикатско]
+Човек ако да пробва някои стандартни тарикатски функции (например винаги да връща една и съща стойност или единия аргумент да е фиктивен), може да стигне до следната структура $\calA$:
+\begin{align*}
+  |\calA| & \stackrel{\text{деф.}}{=} \{ 0, 1 \}       \\
+  f^\calA(t_1, t_2) & \stackrel{\text{деф.}}{=} t_1    \\
+  g^\calA(t_1, t_2) & \stackrel{\text{деф.}}{=} t_2.
+\end{align*}
+Тогава за всяко $t_1, t_2, t_3 \in |\calA|$:
+\begin{align*}
+  & f^\calA(t_1, f^\calA(t_2, t_3)) = f^\calA(t_1, t_2) = f^\calA(f^\calA(t_1, t_2), t_3)               \\
+  & g^\calA(t_1, g^\calA(t_2, t_3)) = g^\calA(t_2, t_3) = g^\calA(g^\calA(t_1, t_2), t_3)               \\
+  & g^\calA(t_1, f^\calA(t_2, t_3)) = f^\calA(t_2, t_3) = f^\calA(g^\calA(t_1, t_2), g^\calA(t_1, t_3)) \\
+  & f^\calA(t_1, g^\calA(t_2, t_1)) = t_1.
+\end{align*}
+Следователно $\calA \models \varphi_1, \varphi_2, \varphi_3, \varphi_4$.
+Освен това $f^\calA(0, 1) = 0 \neq 1 = g^\calA(0, 1)$, откъдето и $\calA \models \varphi_5$.
+\end{solution}
+
+\begin{solution}[естествено]
+За да намерим естествено решение трябва да помислим какво ни казват формулите за един потенциален модел $\calA$:
+\begin{itemize}
+  \item $\varphi_1$ и $\varphi_2$ искат дистрибутивност съответно на $f^\calA$ и $g^\calA$;
+  \item $\varphi_3$ иска дистрибутивност на $g^\calA$ спрямо $f^\calA$;
+  \item $\varphi_4$ е закона за поглъщане от съждителното смятане ($p \land (q \lor p) \equiv p$);
+  \item $\varphi_5$ иска $f^\calA$ и $g^\calA$ да са различни.
+\end{itemize}
+Тогава $\top$(истина) и $\bot$(лъжа) заедно с $\land$(конюнкция) и $\lor$(дизюнкция) ще бъдат модел на формулите.
+\end{solution}
+
+\end{document}
