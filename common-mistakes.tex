@@ -1,0 +1,342 @@
+\documentclass[12pt]{article}
+\usepackage[english, bulgarian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{amssymb}
+\usepackage{hyperref, fancyhdr, lastpage, fancyvrb, tcolorbox, titlesec}
+\usepackage{array, tabularx, colortbl}
+\usepackage{tikz}
+\usepackage{venndiagram}
+\usepackage{amsthm, bm}
+\usepackage{relsize}
+\usepackage{amsmath,physics}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{scalerel}
+\usepackage{theoremref}
+\usepackage{circuitikz}
+\usepackage{geometry}
+\usepackage{stmaryrd}
+\usepackage{forest}
+\usepackage{cancel}
+\usepackage{faktor}
+\usepackage{gensymb}
+\usetikzlibrary{automata, arrows, positioning, shapes}
+\usetikzlibrary{decorations.pathmorphing}
+\useforestlibrary{linguistics}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\opair}{m}
+ {
+  \langle\mspace{2mu}
+  \clist_set:Nn \l_tmpa_clist { #1 }
+  \clist_use:Nn \l_tmpa_clist {,\mspace{3mu plus 1mu minus 1mu}\allowbreak}
+  \mspace{2mu}\rangle
+}
+\ExplSyntaxOff
+
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    linkcolor=blue
+}
+
+\setlength\parindent{0pt}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+
+\newcommand{\vars}{\operatorname{Vars}}
+\newcommand{\free}{\operatorname{Free}}
+
+\newcommand{\logand}{\; \& \;}
+
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calZ}{\mathcal{Z}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calB}{\mathcal{B}}
+
+\newcommand{\fa}{\kern.05em\ensuremath\forall\kern-.22em\rotatebox{69}{\rule{.73em}{.4pt}}}
+\newcommand{\ex}{\kern.05em\ensuremath\exists\kern-.03em\rotatebox{90}{\rule{.68em}{.35pt}}}
+
+
+\newcommand{\dequiv}{\stackrel{\text{деф.}}{\longleftrightarrow}}
+
+\newcommand{\db}[1]{\llbracket #1 \rrbracket}
+
+\DeclareMathOperator*{\bigand}{\scalerel*{\&}{\prod}}
+\DeclareMathOperator*{\bigor}{\scalerel*{\lor}{\sum}}
+
+\newtheorem*{definition}{Дефиниция}
+\newtheorem*{claim}{Твърдение}
+\newtheorem*{property}{Свойство}
+\newtheorem*{hint}{Упътване}
+\theoremstyle{definition}
+\newtheorem*{solution}{Решение}
+\newtheorem*{notation}{Нотация}
+\newtheorem{problem}{Задача}
+
+\title{Рубрика `Често срещани грешки по ЛП`}
+% \author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Смесване на обектния език с метаезика}
+
+\subsection*{Кои са двата езика?}
+\textbf{Обектният език} е предикатния език в задачата, който сме фиксирали.
+В него сме фиксирали:
+\begin{itemize}
+  \item променливи (които по конвенция бележим с $x, y, z$ и потенциални украшения);
+  \item константни символи (които по конвенция бележим с $a, b, c$ и потенциални украшения);
+  \item функционални символи (които по конвенция бележим с $f, g$;
+  \item предикатни символи (които по конвенция бележим с $p, q, r$);
+  \item символите $\forall, \exists, \doteq, \Rightarrow, \Leftrightarrow, \neg, \lor, \&, (, )$ и $,$ (символа за запетая).
+\end{itemize}
+Формулите, които пишем, са някакви крайни низове, които използват \textbf{САМО} тези символи.
+Това са редици от символи, които нямат никакво значение, и без намеса от метаезика не носят \textbf{НИКАКВО} значение.
+Хората понякога пишат формули, които съдържат неща от вида:
+\[
+  p^\calM(x, y) \text{ или } f^\calS(z, x).
+\]
+Горните неща не са конструкции на обектния език.
+По нашите конвенции $p^\calM$ е релация (или функция, която връща И/Л) и $f^\calS$ е функция.
+Изразът $p^\calM(x, y)$ е безсмислен, тъй като в общия случай $x, y$ са променливи, а не елементи от $|\calM|$.
+Същото може да се каже и за $f^\calS(z, x)$, където в общия случай променливите $z$ и $x$ не са елементи на $|\calS|$.
+
+Друга често срещана грешка е добавянето на нова константа в езика, например се наблюдава формула от вида:
+\[
+  \tau \doteq 0 \text{ или } \tau \doteq a.
+\]
+Човек вижда, че $0$ или $a$ e от универсума, и директно решава, че ще ги използва.
+Забелязвам, че доста често се използва константата $0$, за да се определи $\{ 0 \}$.
+Първо, че тя не е част от \textbf{ОБЕКТНИЯ ЕЗИК}.
+Второ, дори и да беше част от него, тогава щеше напълно да се обезсмисли това да се определя самият обект, като той може да бъде достъпен със съответния символ за константа.
+
+\textbf{Метаезикът} е езикът, на който правим математически разсъждения (български + някои математически символи, като $=, \in$).
+Тук \textbf{ВСИЧКО}, което пишем, трябва да \textbf{ИМА} значение.
+Хората, когато доказват, че $f^\calA$ (интерпретацията на функционален символ $f$ в структура $\calA$) е асоциативна, понякога пишат текст от вида:
+\[
+  f(x, f(y, z)) = f(f(x, y), z) \text{ за всяко } x, y, z.
+\]
+Това, което горе пише, е че два терма (редици от символи от обектния език) са равни (буква по буква), което не е вярно.
+Правилното нещо, което трябва да се напише в случая е:
+\[
+  f^\calA(a_1, f^\calA(a_2, a_3) = f^\calA(f^\calA(a_1, a_2), a_3) \text{ за всяко } a_1, a_2, a_3 \in |\calA|.
+\]
+Тук вече няма термове, а има някакви стойности от универсума.
+Казвам, че прилагайки функцията върху тези аргументи по тези два начина, ще получа един и същ резултат, без значение какви аргументи взема от универсума, което се и иска от нас.
+Някои пък са писали и неща от вида:
+\[
+  f(x, f(y, z)) = f(f(x, y), z) \text{ за } \forall x \forall y \forall z.
+\]
+Първо, в този курс сам по себе си символът $\forall$ не носи никакво значение.
+Трябва вместо $\forall$ да се пише \textit{за всяко}.
+Ако някой толкова го мързи да пише този текст, може да използва:
+\begin{itemize}
+  \item $\fa$, като съкращение (на \textbf{МЕТАЕЗИКА}) на \textit{за всяко};
+  \item $\ex$, като съкращение (на \textbf{МЕТАЕЗИКА}) на \textit{съществува}.
+\end{itemize}
+
+\newpage
+
+\subsection*{Как се доказва, че $X \subseteq |\calA|^n$ е определимо?}
+\begin{enumerate}
+  \item Пишем \textbf{ФОРМУЛА} на \textbf{ДАДЕНИЯ В УСЛОВИЕТО} предикатен език $\varphi$.
+  \item Пишем:
+    \begin{align*}
+      \calA \models \varphi \db{a_1, \dots, a_n} & \longleftrightarrow \text{ превод на `} \calA \models \varphi \text{` на метаезика по дефиницията } \\
+                                                 & \stackrel{(\star)}{\longleftrightarrow} \opair{a_1, \dots, a_n} \in X.
+    \end{align*}
+  \item Доказваме $(\star)$, което става в \textbf{МЕТАЕЗИКА}.
+\end{enumerate}
+
+\subsection*{Как се доказва, че $X \subseteq |\calA|^n$ не е определимо?}
+\begin{enumerate}
+  \item Построяваме (в \textbf{МЕТАЕЗИКА}) автоморфизъм $h$, за който $h(X) \neq X$.
+  \item Доказваме (в \textbf{МЕТАЕЗИКА}), че $h : |\calA| \rightarrow |\calA|$ е биекция.
+  \item Доказваме (в \textbf{МЕТАЕЗИКА}), че $h$ е силен хомоморфизъм.
+  \item Доказваме (в \textbf{МЕТАЕЗИКА}), че $h(X) \neq X$.
+\end{enumerate}
+
+\subsection*{Как се доказва, че едно множество от затворени формули $\Gamma$ е изпълнимо?}
+\begin{enumerate}
+  \item Посочваме структура $\calA$ за \textbf{ОБЕКТНИЯ ЕЗИК} (като посочването става на ниво \textbf{МЕТАЕЗИК}).
+  \item Доказваме (в \textbf{МЕТАЕЗИКА}), че $\calA \models \Gamma$, тоест за всяко $\varphi \in \Gamma$ е изпълнено $\calA \models \varphi$.
+\end{enumerate}
+
+\subsection*{Защо не е хубаво да се смесват двата езика?}
+Представете си, че трябва да направите речник, който превежда български думи на английски.
+Това е аналог на задачите за определимост.
+Майсторлъка в писането на речник се състои в избора на едно малко множество от прости думи на английски, което да е достатъчно за превод на възможно най-много български думи.
+В задачата за определимост предикатния език и структурата играят роля на английския, тоест езика, който се предполага, че читателят знае.
+Двойката от множеството, което определяме, и формулата, която го определя, е статията в речника.
+
+\newpage
+
+Следните неща биха направили човек, който си закупи нашия речник, много недоволен:
+\begin{itemize}
+  \item Той потърси значението на някоя дума, и в нейната дефиниция срещне символ, който не е част от английската азбука, например:
+        \begin{center}
+          \textit{диван -- canapé} или \textit{стол -- стол}.
+        \end{center}
+        Това съответства на глупости от вида (тук $0$ не е в езика):
+        \[
+          \varphi_1[x] \leftrightharpoons x \doteq s(0) \text{ или } \varphi_0[x] \leftrightharpoons x \doteq 0.
+        \]
+  \item Той потърси значението на някоя дума, и в нейната дефиниция има сложни думи на английски, които никой не използва, например:
+        \begin{center}
+          \textit{безполезен -- something that can be floccinaucinihilipilificated}
+        \end{center}
+        Това съответства на глупости от вида:
+        \[
+          \varphi_1[x] \leftrightharpoons (\forall y \in \N) (\varphi_<[y, z] \Rightarrow \varphi_0[y]).
+        \]
+        Ограничения на квантори никой не е вкарвал в нашия език, значи не можем да си позволяваме да го правим.
+        Правилното нещо би било:
+        \[
+          \varphi_1[x] \leftrightharpoons \forall y (\varphi_\N[y] \logand \varphi_<[y, z] \Rightarrow \varphi_0[y]).
+        \]
+  \item Той потърси значението на някоя дума, и нейната дефиниция не е на правилен английски, например:
+        \begin{center}
+          \textit{красноречив -- flooent or pursuasive in speeking or wryting}
+        \end{center}
+        Това съответства на глупости от вида:
+        \[
+          \varphi_1[x] \leftrightharpoons \exists y \; \varphi_0[y] \logand x \doteq s(y).
+        \]
+        Скобите имплицитно се слагат така (и въобще броя на свободни променливи не си съответства):
+        \[
+          (\exists y \; \varphi_0[y]) \logand x \doteq s(y).
+        \]
+        За това ако искаме коректна дефиниция на формула, си слагаме ръчно скобите:
+        \[
+          \varphi_1[x] \leftrightharpoons \exists y (\varphi_0[y] \logand x \doteq s(y)).
+        \]
+\end{itemize}
+
+\section{Неуважение на кванторите $\forall$ и $\exists$}
+
+\subsection*{Кванторът $\forall$}
+
+Дефиницията на $\models$ ни казва, че:
+\[
+  \calA \models \exists x \varphi \db{b_1, \dots, b_n} \longleftrightarrow \textbf{ ЗА ВСЯКО } a \in |\calA| \text{ е изпълнено, че } \calA \models \varphi \db{a, b_1, \dots, b_n}.
+\]
+Семантиката на $\forall$ е да обходи \textbf{ВСЕКИ} елемент на универсума, дори когато универсума е многосортен.
+
+Нека да разгледаме структурата $\calS = \opair{ \N \cup \calP(\N), p^\calS, q^\calS}$, където:
+\begin{align*}
+  p^\calS(n, m) & \dequiv n, m \in \N \text{ и } n \leq m \\ 
+  q^\calS(n, X) & \dequiv n \in \N, X \subseteq \N \text{ и } n \in X.
+\end{align*}
+Един (грешен) опит да се определи $\{ 0 \}$ е:
+\[
+  \varphi_0[x] \leftrightharpoons \forall y \; p(x, y).
+\]
+Но тогава:
+\[
+\calS \models \varphi_0\db{n} \longleftrightarrow \text{ за всяко } t \in |\calS| \text{ имаме } p^\calS(n, t).
+\]
+В момента, в който кванторът обходи елемент $t$ на $\calP(\N)$ (което ще стане, понеже $\calP(\N) \subseteq |\calS|$), няма да бъде изпълнено $p^\calS(n, t)$.
+Обикновено хората имплицитно си ограничават кванторите, но това променя дефиницията.
+Дефиниции \textbf{НЕ СЕ} променят.
+
+Правилното нещо е първо да се определи сорта с формулата:
+\[
+  \varphi_\N[x] \leftrightharpoons \exists y \; q(x, y).
+\]
+След това спокойно можем да напишем формулата:
+\[
+  \varphi_0[x] \leftrightharpoons \forall y (\varphi_\N[y] \Rightarrow p(x, y)).
+\]
+Тогава:
+\[
+  \calS \models \varphi_0\db{n} \longleftrightarrow \text{ за всяко } t \in |\calS| \text{ е изпълнено, че ако } t \in \N \text{, то } p^\calS(n, t).
+\]
+Това вече е работи както очакваме, защото експлицитно поставихме ограничение на работата на квантора.
+
+Обикновено кванторът $\forall$ върви ръка за ръка с $\Rightarrow$, а не с $\&$.
+
+\subsection*{Кванторът $\exists$}
+
+Дефиницията на $\models$ ни казва, че:
+\[
+  \calA \models \exists x \varphi \db{b_1, \dots, b_n} \longleftrightarrow \textbf{ ИМА } a \in |\calA| \text{, за което } \calA \models \varphi \db{a, b_1, \dots, b_n}.
+\]
+Семантиката на $\exists$ е да намери поне един елемент от \textbf{ЦЕЛИЯ} универсум, което при многосортен универсум може да включи неща, за които не искаме да говорим.
+
+Нашата формула може да се опитва да експлоатира, че в нашия сорт \textbf{X} няма свидетели за нещо, но е напълно възможно в целият универсум \textbf{U} това да не е така:
+\begin{center}
+\begin{tikzpicture}[scale=2]
+  \draw[decorate,
+        decoration={random steps, segment length=6pt, amplitude=2.5pt}]
+    plot[smooth cycle] coordinates {
+      (-1,0) (4,0.5) (5,3) (2.5,5) (-1,4) (-2,2)
+    };
+  \filldraw[fill=gray!30,
+            draw=black,
+            decorate,
+            decoration={random steps, segment length=5pt, amplitude=2pt}]
+    plot[smooth cycle] coordinates {
+      (0.5,1.2) (3,1.5) (3.5,3.2) (2,4) (0.5,3.5) (0,2.3)
+    };
+  \node at (2,2.7) {\small няма свидетел тук};
+  \node at (2,3.5) {\small сортът \textbf{X}};
+  \fill (3.8,1.5) circle (1pt);
+  \node[right] at (3.8,1.5) {\small свидетел};
+  \node at (2,4.4) {\small в универсума \textbf{U}, но отвъд \textbf{X}};
+
+\end{tikzpicture}
+\end{center}
+Съответно е възможно да не работи формула от вида:
+\[
+  \varphi[x] \leftrightharpoons \exists y \; \psi[x, y].
+\]
+Тогава ще трябва да я заменим с:
+\[
+  \varphi[x] \leftrightharpoons \exists y (\varphi_{\textbf{X}}[y] \logand \psi[x, y]).
+\]
+Обикновено кванторът $\exists$ върви ръка за ръка с $\&$, а не с $\Rightarrow$.
+
+\section{Бъркане на $\varepsilon, \varnothing, \{ \varepsilon \}$ и $\{ \varnothing \}$}
+
+Това са четири \textbf{РАЗЛИЧНИ} обекти:
+\begin{itemize}
+  \item $\varepsilon$ е дума (редица от символи), която има дължина $0$;
+  \item $\varnothing$ е множество, което няма елементи;
+  \item $\{ \varepsilon \}$ е множество, което има един единствен елемент празната дума;
+  \item $\{ \varnothing \}$ е множество, което има един единствен елемент празното множество.
+\end{itemize}
+Обектите $\varepsilon, \{ \varepsilon \}$ и $\{ \varnothing \}$ са обекти от три \textbf{РАЗЛИЧНИ} типа:
+\begin{itemize}
+  \item $\varepsilon$ е \textbf{ДУМА};
+  \item $\{ \varepsilon \}$ е \textbf{МНОЖЕСТВО ОТ ДУМИ};
+  \item $\{ \varnothing\}$ е \textbf{МНОЖЕСТВО ОТ МНОЖЕСТВА}.
+\end{itemize}
+Обектите $\varnothing$ и $\varepsilon$ се различават тривиално по тип, докато останалите обекти се различават тривиално от $\varnothing$ по брой елементи.
+
+Представете си, че сравнявате:
+\begin{itemize}
+  \item празен лист хартия ($\varepsilon$);
+  \item празен джоб ($\varnothing$);
+  \item джоб, в който има един празен лист хартия ($\{ \varepsilon \}$);
+  \item джоб, в който има един празен портфейл ($\{ \varnothing \}$).
+\end{itemize}
+
+\end{document}
