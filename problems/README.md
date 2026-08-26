@@ -6,6 +6,9 @@
 - 2024/2025:
     - [(не)определимост и изпълнимост](proposals/2024-2025/definability-satisfiability.pdf)
     - [пролог](proposals/2024-2025/prolog.pdf)
+- 2025/2026:
+    - [(не)определимост и изпълнимост](proposals/2025-2026/definability-satisfiability.pdf)
+    - [пролог](proposals/2025-2026/prolog.pdf)
 
 ## Контролни
 - 2025/2026 (Информатика):

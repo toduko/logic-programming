@@ -1,0 +1,228 @@
+\documentclass[12pt]{article}
+\usepackage[english, bulgarian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{amssymb}
+\usepackage{hyperref, fancyhdr, lastpage, fancyvrb, tcolorbox, titlesec}
+\usepackage{array, tabularx, colortbl}
+\usepackage{tikz}
+\usepackage{venndiagram}
+\usepackage{amsthm, bm}
+\usepackage{relsize}
+\usepackage{amsmath,physics}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{scalerel}
+\usepackage{theoremref}
+\usepackage{circuitikz}
+\usepackage{geometry}
+\usepackage{stmaryrd}
+\usepackage{forest}
+\usepackage{cancel}
+\usepackage{faktor}
+\usepackage{gensymb}
+\usetikzlibrary{automata, arrows, positioning, shapes}
+\useforestlibrary{linguistics}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\opair}{m}
+ {
+  \langle\mspace{2mu}
+  \clist_set:Nn \l_tmpa_clist { #1 }
+  \clist_use:Nn \l_tmpa_clist {,\mspace{3mu plus 1mu minus 1mu}\allowbreak}
+  \mspace{2mu}\rangle
+}
+\ExplSyntaxOff
+
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    linkcolor=blue
+}
+
+\setlength\parindent{0pt}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+
+\newcommand{\vars}{\operatorname{Vars}}
+\newcommand{\free}{\operatorname{Free}}
+
+\newcommand{\logand}{\; \& \;}
+
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calZ}{\mathcal{Z}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calB}{\mathcal{B}}
+
+\newcommand{\dequiv}{\stackrel{\text{деф.}}{\longleftrightarrow}}
+
+\newcommand{\db}[1]{\llbracket #1 \rrbracket}
+
+\DeclareMathOperator*{\bigand}{\scalerel*{\&}{\prod}}
+\DeclareMathOperator*{\bigor}{\scalerel*{\lor}{\sum}}
+
+\newtheorem*{definition}{Дефиниция}
+\newtheorem{problem}{Задача}[section]
+\newtheorem*{claim}{Твърдение}
+\newtheorem*{property}{Свойство}
+\newtheorem*{hint}{Упътване}
+\theoremstyle{definition}
+\newtheorem*{solution}{Решение}
+\newtheorem*{notation}{Нотация}
+
+\title{(Не)определимост и изпълнимост -- 2025/2026}
+\author{Тодор Дуков}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{(Не)определимост}
+
+\begin{problem}
+Дефинираме индуктивно $V_n$, за всяко естествено $n$:
+\begin{align*}
+	 & V_0        = \varnothing  \\
+	 & V_{n + 1}  = \calP (V_n).
+\end{align*}
+След това полагаме:
+\[
+	V_\omega = \bigcup\limits_{n \in \N} V_n.
+\]
+Разглеждаме предикатния език $\calL$, съставен от двуместен предикатен символ $\operatorname{in}$, заедно с $\calL$-структурата $\calS = \opair{V_\omega, \operatorname{in}^\calS}$, където:
+\[
+	\operatorname{in}^\calS(X, Y) \dequiv X \in Y.
+\]
+Да се докаже, че в $\calS$ са определими:
+\begin{itemize}
+	\item графиките на операциите чифт, наредена двойка (дефиницията на Kuratowski) и степенно множество;
+	\item графиките на операциите обединение и сечение;
+	\item графиките на операциите събирание, умножение и степенуване;
+	\item множеството от всички релации, множеството от всички функции и множеството от всички двойки равномощни множества;
+	\item за всяко естествено $n$, множествата $\{ V_n \}, \{ n \}$ и множеството $\omega$;
+\end{itemize}
+Да се докаже, че ако една за релация $R \in V_n$, множеството $\{ R \}$ е определимо в $\calS$, то тогава $R$ е определимо в $\calS$.
+\end{problem}
+
+\begin{problem}
+Нека фиксираме някаква крайна азбука $\Sigma$.
+Нека $\calL$ е предикатен език, съставен от двуместния предикатен символ $<$, заедно с едноместните предикатни символи $q_\sigma$, за всяко $\sigma \in \Sigma$.
+
+За всяко $\alpha \in \Sigma^*$, дефинираме $\calL$-структурата $\calA_\alpha$, за която:
+\begin{align*}
+	|\calA_\alpha|             & = \{ 0, \dots, |\alpha| \}                          \\
+	i <^{\calA_\alpha} j       & \dequiv i < j                                       \\
+	q_\sigma^{\calA_\alpha}(i) & \dequiv i < |\alpha| \text{ и } \alpha[i] = \sigma.
+\end{align*}
+За една формула $\varphi$ дефинираме:
+\[
+	\operatorname{Lang}[\varphi] = \{ \alpha \in \Sigma^* \mid \calA_\alpha \models \varphi \}.
+\]
+Да се докаже, че ако един език $L$ е регулярен и в конструкцията му не участва звезда на Клини, то тогава има формула $\varphi$, за която $\operatorname{Lang}[\varphi] = L$.
+\end{problem}
+
+\begin{problem}
+Нека $\Sigma = \{ a, b \}$.
+Разглеждаме предикатния език $\calL$, съставен от триместния предикатен символ $\operatorname{cat}$ и едноместния предикатен символ $\operatorname{leq}$, заедно със $\calL$-структурата $\calM = \opair{\Sigma^*, \operatorname{cat}^\calM, \operatorname{leq}^\calM}$, където:
+\begin{align*}
+	\operatorname{cat}(\alpha, \beta, \gamma) & \dequiv \alpha \cdot \beta = \gamma \\
+	\operatorname{leq}(\alpha)                & \dequiv |\alpha|_a \leq |\alpha|_b.
+\end{align*}
+Да се докаже, че в $\calM$ са определими:
+\begin{itemize}
+	\item за всяко $\alpha \in \Sigma^*$, множеството $\{ \alpha \}$;
+	\item езика $\{ ab \}^*$;
+	\item езика $\{ a \}^* \cdot \{ b \}^*$;
+	\item езика $\{ a^n b^n \mid n \in \N \}$;
+	\item езика $\{ a^n b^n a^n \mid n \in \N \}$.
+\end{itemize}
+Да се определят всички автоморфизми в $\calM$.
+\end{problem}
+
+\newpage 
+
+\begin{problem}
+Нека $\Sigma$ е крайна азбука.
+Със $\operatorname{PC}(\Sigma)$ да бележим множеството от всички езици $T \subseteq \Sigma^*$, които се затворени надолу отностно $\preceq_{\operatorname{pref}}$.
+Разглеждаме предикатния език $\calL$, съставен от двуместния предикатен символ $\operatorname{sub}$, заедно със $\calL$-структурата $\calM_\Sigma = \opair{\operatorname{PC}(\Sigma), \operatorname{sub}^{\calM_\Sigma}}$, където:
+\[
+  \operatorname{sub}^{\calM_\Sigma}(T_1, T_2) \dequiv T_1 \subseteq T_2.
+\]
+Да се докаже, че в $\calM_\Sigma$ са определими:
+\begin{itemize}
+  \item $\{ \Sigma^* \}$;
+  \item за всяко $n$, множеството $\{ \Sigma^{\leq n} \}$;
+  \item множеството от тези езици, които са вериги в $\opair{\Sigma^*, \preceq_{\operatorname{pref}}}$;
+  \item множеството от тези безкрайни езици, които са вериги в $\opair{\Sigma^*, \preceq_{\operatorname{pref}}}$.
+\end{itemize}
+Да се докаже, че за всяко естествено $n \geq 1$ има формула $\varphi_n$, за която:
+\[
+  \calM_\Sigma \models \varphi_n \longleftrightarrow |\Sigma| = n.
+\]
+Да се определят всички автоморфизми в $\calM_\Sigma$.
+\end{problem}
+
+\newpage
+
+\section{Изпълнимост}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+	 & \varphi_1 : \forall x \forall y \exists ! z \exists ! t (f(x, z) \doteq y \logand f(t, x) \doteq y) \\
+	 & \varphi_2 : \neg \forall x \forall y \forall z (f(x, f(y, z)) \doteq f(f(x, y), z))                 \\
+	 & \varphi_3 : \forall x (f(x, a) \doteq x \logand f(a, x) \doteq x)                                   \\
+	 & \varphi_4 : \forall x \forall y (f(x, y) \doteq f(y, x)).
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+	 & \varphi_1 : \forall x \forall y \forall z (f(x, f(y, z)) \doteq f(f(x, y), z))       \\
+	 & \varphi_2 : \forall x \forall y \forall z (g(x, g(y, z)) \doteq g(g(x, y), z))       \\
+	 & \varphi_3 : \forall x \forall y \forall z (g(x, f(y, z)) \doteq f(g(x, y), g(x, z))) \\
+	 & \varphi_4 : \forall x \forall y (f(x, g(y, x)) \doteq x)                             \\
+	 & \varphi_5 : \exists x \exists y (f(x, y) \not \doteq g(x, y))                        \\
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+	 & \varphi_1 : \forall x \forall y \forall z (f(x, f(y, z)) \doteq f(f(x, y), z))       \\
+	 & \varphi_2 : \forall x \forall y \forall z (g(x, g(y, z)) \doteq g(g(x, y), z))       \\
+	 & \varphi_3 : \forall x \forall y \forall z (g(x, f(y, z)) \doteq f(g(x, y), g(x, z))) \\
+	 & \varphi_4 : \exists x \exists y (p(x) \logand p(y) \logand p(f(x, y)))               \\
+	 & \varphi_5 : \exists x \exists y (p(x) \logand p(y) \logand \neg p(f(x, y)))          \\
+	 & \varphi_6 : \exists x \exists y (p(x) \logand \neg p(y) \logand p(f(x, y)))          \\
+	 & \varphi_7 : \exists x \exists y (p(x) \logand \neg p(y) \logand \neg p(f(x, y)))     \\
+	 & \varphi_8 : \forall x \forall y (p(x) \logand p(y) \Rightarrow \neg p(g(x, y)))
+\end{align*}
+\end{problem}
+
+\begin{problem}
+Да се докаже, че следното множество от формули е изпълнимо:
+\begin{align*}
+	 & \varphi_1 : \forall x \neg p(x, x)                                                     \\
+   & \varphi_2 : \forall x \forall y \forall z (p(x, y) \logand p(y, z) \Rightarrow p(x, z)) \\
+   & \varphi_3 : \forall x \forall (q(x, y) \Leftrightarrow p(x, y) \logand \neg \exists z (p(x, z) \logand p(z, y))) \\
+   & \psi_n : \exists x \exists y_1 \dots \exists y_n (\bigand_{1 \leq i \leq n} q(x, y_i) \logand \bigand_{1 \leq i, j \leq n} \neg q(y_i, y_j) \logand \forall y (q(x, y) \Rightarrow \bigor_{1 \leq i \leq n} y \doteq y_i))
+\end{align*}
+\end{problem}
+
+\end{document}

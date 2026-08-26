@@ -1,0 +1,151 @@
+\documentclass[12pt]{article}
+\usepackage[english, bulgarian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{amssymb}
+\usepackage{hyperref, fancyhdr, lastpage, fancyvrb, tcolorbox, titlesec}
+\usepackage{array, tabularx, colortbl}
+\usepackage{tikz}
+\usepackage{venndiagram}
+\usepackage{amsthm, bm}
+\usepackage{relsize}
+\usepackage{amsmath,physics}
+\usepackage{mathtools}
+\usepackage{subcaption}
+\usepackage{scalerel}
+\usepackage{theoremref}
+\usepackage{circuitikz}
+\usepackage{geometry}
+\usepackage{stmaryrd}
+\usepackage{forest}
+\usepackage{cancel}
+\usepackage{faktor}
+\usepackage{gensymb}
+\usetikzlibrary{automata, arrows, positioning, shapes}
+\useforestlibrary{linguistics}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\opair}{m}
+ {
+  \langle\mspace{2mu}
+  \clist_set:Nn \l_tmpa_clist { #1 }
+  \clist_use:Nn \l_tmpa_clist {,\mspace{3mu plus 1mu minus 1mu}\allowbreak}
+  \mspace{2mu}\rangle
+}
+\ExplSyntaxOff
+
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    linkcolor=blue
+}
+
+\setlength\parindent{0pt}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+
+\newcommand{\vars}{\operatorname{Vars}}
+\newcommand{\free}{\operatorname{Free}}
+
+\newcommand{\logand}{\; \& \;}
+
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calZ}{\mathcal{Z}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calB}{\mathcal{B}}
+
+\newcommand{\dequiv}{\stackrel{\text{деф.}}{\longleftrightarrow}}
+
+\newcommand{\db}[1]{\llbracket #1 \rrbracket}
+
+\DeclareMathOperator*{\bigand}{\scalerel*{\&}{\sum}}
+
+\newtheorem*{definition}{Дефиниция}
+\newtheorem{problem}{Задача}
+\newtheorem*{claim}{Твърдение}
+\newtheorem*{property}{Свойство}
+\newtheorem*{hint}{Упътване}
+\theoremstyle{definition}
+\newtheorem*{solution}{Решение}
+\newtheorem*{notation}{Нотация}
+\theoremstyle{remark}
+\newtheorem*{remark}{Забележка}
+
+\title{Пролог -- 2025/2026}
+\author{Тодор Дуков}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{problem}
+  Разглеждаме предикатния език $\calL$ с двуместен предикатен символ $p$, като представяме неговите формули в Пролог по следния начин:
+  \begin{itemize}
+    \item атомарните формули $p(x_i, x_j)$ ще представяме с $\mathtt{p(i, j)}$;
+    \item $\neg \varphi$ ще представяме като $\mathtt{not}(\text{пр}(\varphi))$, където $\text{пр}(\varphi)$ е представянето на $\varphi$ в Пролог;
+    \item $(\varphi \lor \psi)$ ще представяме като $\mathtt{or}(\text{пр}(\varphi), \text{пр}(\psi))$, където $\text{пр}(\varphi)$ и $\text{пр}(\psi)$ са съответно представянията на $\varphi$ и $\psi$ в Пролог;
+    \item $(\varphi \land \psi)$ ще представяме като $\mathtt{and}(\text{пр}(\varphi), \text{пр}(\psi))$, където $\text{пр}(\varphi)$ и $\text{пр}(\psi)$ са съответно представянията на $\varphi$ и $\psi$ в Пролог;
+    \item $\exists x_i \varphi$ ще представяме като $\mathtt{exists}(\mathtt{i}, \text{пр}(\varphi))$, където $\text{пр}(\varphi)$ е представянето на $\varphi$ в Пролог.
+  \end{itemize}
+  Всяка крайна $\calL$-структура може да се представи в Пролог като двойка $\mathtt{(U, PInt)}$, където $\mathtt{U}$ е списък от различни елементи и $\mathtt{PInt}$ е списък от двойки от елементи от $\mathtt{U}$.
+
+  Да се дефинира на Пролог предикат $\mathtt{satisfies(S, Phi)}$, който при подадено представяне $\mathtt{S}$ на крайна $\calL$-структура $\calS$ и представяне $\mathtt{Phi}$ на затворена формула $\varphi$ проверява дали $\calS \models \varphi$.
+  \begin{remark}
+    Може да премахнем $\lor$ или $\land$ от дефиницията за улеснение.
+    Ядрото на задачата остава същото.
+  \end{remark}
+\end{problem}
+
+\begin{problem}
+  Да се дефинира на Пролог предикат $\mathtt{between(Low, High, X)}$, кoйто при подадени рационални числа $\mathtt{Low}$ и $\mathtt{High}$ при преудовлетворяване генерира в $\mathtt{X}$ всички рационални числа, които попадат в затворения интервал $[\mathtt{Low}, \mathtt{High}]$.
+  \begin{remark}
+    Ако искаме да направим задачата по-лесна, може да фиксираме границите на интервала, например да говорим за $[0, 1]$, но разликата между двете е едно скалиране и отместване.
+  \end{remark}
+\end{problem}
+
+\begin{problem}
+  Дефинираме следните азбуки:
+  \begin{itemize}
+    \item $\Sigma_{l} = \{ a, b, c, d, e, f, g, h \}$;
+    \item $\Sigma_{n} = \{ 1, 2, 3, 4, 5, 6, 7, 8 \}$;
+    \item $\Sigma_{c} = \{ white, black \}$;
+    \item $\Sigma_{p} = \{ pawn, knight, bishop, rook, queen, king \}$.
+  \end{itemize}
+  Състояние в игра на шах ще наричаме всяка функция
+  \[
+    s : \Sigma_{l} \Sigma_{n} \rightarrow \Sigma_{c} \Sigma_{p} \cup \{ \varepsilon \}.
+  \]
+  Представянето на функцията $s$ на Пролог ще бъде списък от всички наредени двойки $\mathtt{(pos, piece)}$, където $\mathtt{pos} \in \Sigma_l \cdot \Sigma_n$ и $\mathtt{piece} = s(\mathtt{pos})$.
+  Да се дефинира на Пролог предикат $\mathtt{valid\_states(S)}$, който при преудовлетворяване генерира в $\mathtt{S}$ представяне на всички състояния, които са достижими по правилата на Шах.
+  \begin{remark}
+    Като по-трудно условие може да поискаме състоянията, които са на $k$ хода от форсиран мат.
+  \end{remark}
+\end{problem}
+
+\begin{problem}
+  Хора кандидатстват за прием в университет със:
+  \begin{itemize}
+    \item идентификационен номер;
+    \item състезателен бал;
+    \item непразен номериран списък (в който няма повторения) със желания (специалности в университета).
+  \end{itemize}
+  Ще представяме една такава кандидатура на Пролог като тройката $\mathtt{(ID, S, CP)}$, където $\mathtt{ID}$ е идентификационния номер на кандидат-студента, $\mathtt{S}$ е състезателния бал на кандидат-студента и $\mathtt{CP}$ е списъка с желания на кандидат-студента, подреден от най-желана към най-нежелана специалност.
+
+  Да се дефинира на Пролог предикат $\mathtt{everyone\_happy(P, A)}$, който при подаден списък $\mathtt{P}$ от двойки със специалности и броят места, и списък $\mathtt{A}$ от кандидатури проверява дали всеки кандидат-студент е приет по първо желание.
+\end{problem}
+
+\end{document}
