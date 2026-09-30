@@ -199,12 +199,12 @@
 \section{Семантика}
 
 \begin{definition}
-	Структура за предикатен език $\calL = \opair{\calC, \calF, \calP, \#}$ ще наричаме всяко $\calA = \opair{A, C, F, P}$, за което:
+	Структура за предикатен език $\calL = \opair{\calC, \calF, \calP, \#}$ ще наричаме всяко $\calA = \opair{A, \cdot^\calA}$, за което:
 	\begin{itemize}
 		\item $A \neq \varnothing$ се нарича универсум или носител на $\calA$;
-		\item $C \subseteq A$ и за всяко $c \in \calC$ има $c^\calA \in C$;
-		\item за всяко $f \in \calF$ с $\#(f) = n$ има $f^\calA \in F$, като $f^\calA : A^n \rightarrow A$;
-		\item за всяко $p \in \calP$ с $\#(p) = n$ има $p^\calA \in P$, като $p^\calA \subseteq A^n$ и в частност $\doteq^\calA$ винаги играе ролята на идентитет (при език с формално равенство).
+		\item за всяко $c \in \calC$ имаме $c^\calA \in C$;
+		\item за всяко $f \in \calF$ с $\#(f) = n$ имаме $f^\calA : A^n \rightarrow A$;
+		\item за всяко $p \in \calP$ с $\#(p) = n$ имаме $p^\calA \subseteq A^n$, като в частност $\doteq^\calA$ винаги играе ролята на идентитет (при език с формално равенство).
 	\end{itemize}
 \end{definition}
 
@@ -213,7 +213,7 @@
 \end{notation}
 
 \begin{notation}
-	Вместо да използваме записа $\calA = \opair{A, C, F, P}$ ще изреждаме всички символи, тоест ще пишем $\calA = \opair{A, c_0^\calA, c_1^\calA, \dots, f_0^\calA, f_1^\calA, \dots, p_0^\calA, p_1^\calA, \dots}$.
+	Вместо да използваме записа $\calA = \opair{A, \cdot^\calA}$, след универсума ще изреждаме интерпретациите на всички символи в езика, тоест бихме ползвали запис от вида $\calA = \opair{A, c_0^\calA, c_1^\calA, \dots, f_0^\calA, f_1^\calA, \dots, p_0^\calA, p_1^\calA, \dots}$.
 \end{notation}
 
 \begin{notation}
@@ -221,7 +221,7 @@
 \end{notation}
 
 \begin{notation}
-	За да няма конфликти между обектния език и метаезика ще използваме $f[x]$ вместо $f(x)$, когато искаме образът на $x$ през $f$.
+	За да няма конфликти между обектния език и метаезика ще ползваме записът $f[x]$ вместо $f(x)$, когато искаме образът на $x$ през $f$.
 \end{notation}
 
 \begin{definition}
